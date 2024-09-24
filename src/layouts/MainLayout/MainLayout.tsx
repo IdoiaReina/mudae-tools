@@ -88,6 +88,10 @@ const HeaderTitleButtonContainer = styled(HeaderTitleButton)`
   height: max-content;
   align-self: center;
 
+  b {
+    flex: none;
+  }
+
   @media ${(props) => props.theme.media.desktop} {
     margin-bottom: 10px;
   }
@@ -176,7 +180,9 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
           <HeaderContainer>
             <HeaderTitleButtonContainer onClick={navigateToMainPage}>
               <MainLogo />
-              Mudae Tools
+              <b>
+                Mudae Tools
+              </b>
             </HeaderTitleButtonContainer>
             <MainLayoutNavTabs
               tabValue={tabValue}

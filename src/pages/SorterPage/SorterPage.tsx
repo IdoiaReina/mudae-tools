@@ -58,8 +58,8 @@ const Board = styled.div`
 `
 
 const Container = styled.div`
+  min-height: 100px;
   margin: 20px 0px;
-  padding: 10px;
   background-color: ${(props) => props.theme.colors.main};
   border-radius: 4px;
   display: flex;
@@ -88,10 +88,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   }
 
   const onOutputClick = () => {
-    const firstMarry = `$fm ${waifus[0].id} \n\n`
-    const haremOrder = `$smp ${waifus.map((w) => w.id).join('$')}`
-
-    setOutput(firstMarry + haremOrder)
+    setOutput(`$smp ${waifus.map((w) => w.id).join('$')}`)
   }
 
   const sensors = useSensors(
