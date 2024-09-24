@@ -124,7 +124,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       </div>
       <Board>
         <FormBoldTitle>
-          Input
+          Input ($mmi-s)
           <ButtonsContainer>
             <LongButton
               variant="contained"
