@@ -12,9 +12,9 @@ import type {
 } from '@mui/material'
 
 /* Internal Variables ------------------------------------------------------- */
-export const PRIMARY_COLOR = '#b178c9'
-export const SECONDARY_COLOR = '#75C9B7'
-export const INFO_COLOR = '#f6a8b9'
+export const PRIMARY_COLOR = '#ea4f8e'
+export const SECONDARY_COLOR = '#ffae5a'
+export const INFO_COLOR = '#ba5ebf'
 
 /* Material UI theme -------------------------------------------------------- */
 interface MuiThemeProps {

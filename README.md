@@ -50,3 +50,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [ ] Verify input
 - [ ] Calculate + split output
 - [ ] Add a copy to clipboard output
+- [ ] Change favicon
+- [ ] Change .exe icon
+- [ ] Verify package.json

@@ -23,7 +23,7 @@ const Theme: React.FC<ThemeProps> = ({ children, ...props }) => {
   const themeState = useAppSelector(selectTheme)
 
   const theme = useMemo(() => emotionTheme({
-    mode: themeState.mode ?? 'light',
+    mode: themeState.mode ?? 'dark',
     primary: PRIMARY_COLOR,
     secondary: SECONDARY_COLOR,
     info: INFO_COLOR,
