@@ -79,6 +79,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     const lines = input.split('\n')
     const w: Waifu[] = []
     lines.forEach((line) => {
+      if (!line.includes(' - http')) return
       const id = line.split(' - http')[0]
       const url = `http${line.split(' - http')[1]}`
       if (isValidString(id))
