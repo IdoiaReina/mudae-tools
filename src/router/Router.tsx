@@ -13,6 +13,7 @@ import {
 import MainLayout from 'layouts/MainLayout/MainLayout'
 // Main Pages
 import SorterPage from 'pages/SorterPage/SorterPage'
+import NotFoundPage from 'pages/NotFoundPage/NotFoundPage'
 
 /* Component declaration ---------------------------------------------------- */
 interface AuthRouterProps {}
@@ -28,14 +29,18 @@ const Router: React.FC<AuthRouterProps> = () => {
           index
           element={
             <Navigate
-              to="/sorter"
+              to="/harem-sorter"
               replace
             />
           }
         />
         <Route
-          path="sorter"
+          path="harem-sorter"
           element={<SorterPage />}
+        />
+        <Route
+          path="*"
+          element={<NotFoundPage />}
         />
       </Route>
     </Routes>

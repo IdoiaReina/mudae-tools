@@ -22,7 +22,15 @@ import RouteTitle from 'router/RouteTitle'
 const tabs = [
   {
     label: 'Harem Sorter',
-    path: 'sorter',
+    path: 'harem-sorter',
+  },
+  {
+    label: 'Image Picker',
+    path: 'image-picker',
+  },
+  {
+    label: 'Custom Image Helper',
+    path: 'custom-image-helper',
   },
 ]
 
