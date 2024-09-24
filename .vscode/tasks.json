@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "label": "NPM: ESLint",
+      "detail": "eslint .",
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "lint-fix",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "label": "NPM: ESLint fix",
+      "detail": "eslint --fix .",
+      "group": "build"
+    },
+    {
+      "label": "NPM: TypeScript build",
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build"
+      }
+    }
+  ]
+}

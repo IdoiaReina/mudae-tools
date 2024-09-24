@@ -1,0 +1,8 @@
+{
+  "api": {
+    "url": {
+      "description": "L'url de l'API.",
+      "valeur": "http://127.0.0.1:3333"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+include:
+  - project: "euroinformatique/outils/gitlab-ci-templates"
+    file: ".react-front-gitlab-ci.yml"
+
+.runner-dev:
+  tags:
+    - runner-ci-euroinfo-PROD
+
+.runner-deploy-dev:
+  tags:
+    - deploy-euroinfo-prod-git
+
+variables:
+  OTHER_BUILD_ARGS: --build-arg REACT_APP_TEAMVIEWER_CLIENT_ID=$REACT_APP_TEAMVIEWER_CLIENT_ID --build-arg REACT_APP_TEAMVIEWER_CLIENT_SECRET=$REACT_APP_TEAMVIEWER_CLIENT_SECRET --build-arg REACT_APP_TINY_MCE_KEY=$REACT_APP_TINY_MCE_KEY
