@@ -11,15 +11,6 @@ import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
 import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  type DropResult,
-} from 'react-beautiful-dnd'
-import StrictModeDroppable from 'components/StrictModeDroppable/StrictModeDroppable'
-import ReactGridLayout from 'react-grid-layout'
-import 'react-grid-layout/css/styles.css'
-import {
   DndContext,
   closestCenter,
   KeyboardSensor,
@@ -113,18 +104,6 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     })
     console.log(w)
     setWaifus(w)
-  }
-
-  const handleOnDragEnd = (result: DropResult) => {
-    const { destination, source } = result
-
-    if (!destination) return
-
-    const updatedImages = [ ...waifus ]
-    const [ movedImage ] = updatedImages.splice(source.index, 1)
-    updatedImages.splice(destination.index, 0, movedImage)
-
-    setWaifus(updatedImages)
   }
 
   const [ activeId, setActiveId ] = useState(null)

@@ -12,7 +12,6 @@ import {
 // Layouts
 import MainLayout from 'layouts/MainLayout/MainLayout'
 // Main Pages
-import LoginPage from 'pages/AuthPages/LoginPage/LoginPage'
 import SorterPage from 'pages/SorterPage/SorterPage'
 
 /* Component declaration ---------------------------------------------------- */
