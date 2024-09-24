@@ -71,7 +71,7 @@ const Container = styled.div`
 interface SorterPageProps {}
 
 const SorterPage: React.FC<SorterPageProps> = () => {
-  const [ input, setInput ] = useState<string>('Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png')
+  const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png')
   const [ output, setOutput ] = useState<string>('')
   const [ waifus, setWaifus ] = useState<Waifu[]>([])
 

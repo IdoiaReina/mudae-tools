@@ -47,7 +47,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Todo
 - [ ] Input as modal
-- [ ] Verify input
+- [x] Verify input
 - [ ] Calculate + split output
 - [ ] Add a copy to clipboard output
 - [ ] Change favicon
