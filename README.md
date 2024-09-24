@@ -46,10 +46,10 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Todo
-- [ ] Input as modal
+- [x] Input as modal
 - [x] Verify input
-- [ ] Calculate + split output
-- [ ] Add a copy to clipboard output
+- [x] Calculate + split output
+- [x] Add a copy to clipboard output
 - [ ] Change favicon
 - [ ] Change .exe icon
 - [ ] Verify package.json
