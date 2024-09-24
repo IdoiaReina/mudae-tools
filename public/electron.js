@@ -34,9 +34,9 @@ function createWindow() {
   }
 
   // Automatically open Chrome's DevTools in development mode.
-  // if (!app.isPackaged) {
+  if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
-  // }
+  }
 
   mainWindow.on('closed', () => (mainWindow = null))
 }
