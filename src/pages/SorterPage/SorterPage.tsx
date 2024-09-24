@@ -3,13 +3,16 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable'
 import { isValidString } from 'helpers/isValidString'
 
 /* Component imports -------------------------------------------------------- */
 import { TextField } from '@mui/material'
-import LargeTitle from 'components/LargeTitle/LargeTitle'
-import LongButton from 'components/LongButton/LongButton'
-import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 import {
   DndContext,
   closestCenter,
@@ -17,17 +20,17 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay,
 } from '@dnd-kit/core'
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy,
-} from '@dnd-kit/sortable'
+import LargeTitle from 'components/LargeTitle/LargeTitle'
+import LongButton from 'components/LongButton/LongButton'
+import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 import SortableItem from './SortableItem'
 
-/* Type imports ------------------------------------------------------------- */
+/* Type declarations -------------------------------------------------------- */
+export interface Waifu {
+  id: string;
+  url: string;
+}
 
 /* Styled components -------------------------------------------------------- */
 const ButtonsContainer = styled.div`
@@ -55,7 +58,7 @@ const Board = styled.div`
 `
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin: 20px 0px;
   padding: 10px;
   background-color: ${(props) => props.theme.colors.main};
   border-radius: 4px;
@@ -64,33 +67,12 @@ const Container = styled.div`
   flex-direction: row;
 `
 
-const Card = styled.div`
-  width: 150px;
-  height: 180px;
-  background-color: ${(props) => props.theme.colors.lightgrey};
-  padding: 5px;
-  font-size: 13px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-`
-
-const Image = styled.img`
-  width: 100px;
-`
-
 /* Component declaration ---------------------------------------------------- */
 interface SorterPageProps {}
 
 const SorterPage: React.FC<SorterPageProps> = () => {
-  interface Waifu {
-    id: string;
-    url: string;
-  }
-
   const [ input, setInput ] = useState<string>('Hako-Maro - https://mudae.net/uploads/8696781/JFbqZbh~J4tzpBl.png\nYumemi Yumemite - https://mudae.net/uploads/8550277/AgjGreD~ZbQ3L5t.png')
+  const [ output, setOutput ] = useState<string>('')
   const [ waifus, setWaifus ] = useState<Waifu[]>([])
 
   const onParseClick = () => {
@@ -102,11 +84,16 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       if (isValidString(id))
         w.push({ id, url })
     })
-    console.log(w)
     setWaifus(w)
   }
 
-  const [ activeId, setActiveId ] = useState(null)
+  const onOutputClick = () => {
+    const firstMarry = `$fm ${waifus[0].id} \n\n`
+    const haremOrder = `$smp ${waifus.map((w) => w.id).join('$')}`
+
+    setOutput(firstMarry + haremOrder)
+  }
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -114,25 +101,17 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     }),
   )
 
-  const handleDragStart = (event: {active: {id: React.SetStateAction<null> }} ) => {
-    setActiveId(event.active.id)
-  }
-
-  const handleDragEnd = (event: {active: Waifu; over: Waifu} ) => {
-    setActiveId(null)
+  const handleDragEnd = (event: {active: {id: string}; over: {id: string}} ) => {
     const { active, over } = event
 
     if (active.id !== over.id) {
       setWaifus((items) => {
         const oldIndex = items.findIndex((i) => i.id === active.id)
         const newIndex = items.findIndex((i) => i.id === over.id)
-
         return arrayMove(items, oldIndex, newIndex)
       })
     }
   }
-
-  console.log(waifus)
 
   return (
     <div>
@@ -161,19 +140,31 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           multiline
           rows={4}
         />
+        <FormBoldTitle>
+          Output
+          <ButtonsContainer>
+            <LongButton
+              variant="contained"
+              onClick={onOutputClick}
+            >
+              Générer la commande Mudae
+            </LongButton>
+          </ButtonsContainer>
+        </FormBoldTitle>
+        <TextField
+          value={output}
+          onChange={(e) => setOutput(e.target.value)}
+          multiline
+          rows={4}
+        />
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           onDragEnd={handleDragEnd}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          onDragStart={handleDragStart}
         >
-          <Container
-            style={{ display: 'flex-wrap', flexDirection: 'row' }}
-          >
+          <Container>
             <SortableContext
               items={waifus}
               strategy={rectSortingStrategy}
@@ -183,35 +174,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
                   <SortableItem
                     key={w.id}
                     id={w.id}
-                    content={
-                      <Card>
-                        {w.id}
-                        <Image
-                          src={w.url}
-                          alt={w.id}
-                          referrerPolicy="no-referrer"
-                        />
-                      </Card>
-                    }
+                    waifu={w}
                   />
                 ))
               }
-              <DragOverlay>
-                {
-                  activeId ?
-                    (
-                      <div
-                        style={
-                          {
-                            width: '120px',
-                            height: '220px',
-                          }
-                        }
-                      />
-                    ) :
-                    null
-                }
-              </DragOverlay>
             </SortableContext>
           </Container>
         </DndContext>
