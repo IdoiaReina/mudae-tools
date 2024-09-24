@@ -19,6 +19,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
+import { ContentCopy } from '@mui/icons-material'
 import {
   DndContext,
   closestCenter,
@@ -29,6 +30,7 @@ import {
 } from '@dnd-kit/core'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import SortableItem from './SortableItem'
 
 /* Type declarations -------------------------------------------------------- */
@@ -82,6 +84,13 @@ const TitleButtons = styled.div`
   align-items: center;
 `
 
+const Line = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 5px;
+  align-items: center;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface SorterPageProps {}
 
@@ -90,8 +99,9 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   const [ openInput, setOpenInput ] = useState<boolean>(false)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
   const [ openOutput, setOpenOutput ] = useState<boolean>(false)
-  const [ output, setOutput ] = useState<string>('')
+  const [ output, setOutput ] = useState<string[]>([])
   const [ waifus, setWaifus ] = useState<Waifu[]>([])
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
 
   const onParseClick = () => {
     const lines = input.split('\n')
@@ -108,15 +118,40 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   }
 
   const onOutputClick = () => {
-    setOutput(`$smp ${waifus.map((w) => w.id).join('$')}`)
+    const ids = waifus.map((w) => w.id)
+    const maxLength = 2000
+    const result: string[] = []
+    let currentText = '$smp '
+    let lastAddedId = ''
+
+    ids.forEach((id) => {
+      const nextText = `${currentText + id}$`
+      console.log(nextText)
+
+      if (nextText.length > maxLength) {
+        result.push(currentText.trim().slice(0, -1))
+        currentText = `$smp ${lastAddedId}$${id}$`
+      } else {
+        currentText = nextText
+        lastAddedId = id
+      }
+    })
+
+    if (currentText.trim()) {
+      result.push(currentText.trim().slice(0, -1))
+    }
+
+    setOutput(result)
   }
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  )
+  const onCopyToClipBoard = async (value: string) => {
+    if (typeof ClipboardItem !== 'undefined') {
+      const html = new Blob([ value ], { type: 'text/html' })
+      const text = new Blob([ value ], { type: 'text/plain' })
+      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
+      await navigator.clipboard.write([ data ])
+    }
+  }
 
   const handleDragEnd = (event: {active: {id: string}; over: {id: string}} ) => {
     const { active, over } = event
@@ -199,12 +234,21 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           Export Mudae Commands
         </ModalTitle>
         <DialogContent>
-          <TextField
-            value={output}
-            onChange={(e) => setOutput(e.target.value)}
-            multiline
-            rows={10}
-          />
+          {
+            output.map((value, index) => (
+              <Line key={index}>
+                <TextField
+                  value={value}
+                  multiline
+                />
+                <CustomIconButton
+                  Icon={ContentCopy}
+                  variant="contained"
+                  onClick={() => onCopyToClipBoard(value)}
+                />
+              </Line>
+            ))
+          }
         </DialogContent>
         <ModalAction>
           <LongButton
