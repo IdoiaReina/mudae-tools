@@ -12,7 +12,13 @@ import {
 import { isValidString } from 'helpers/isValidString'
 
 /* Component imports -------------------------------------------------------- */
-import { TextField } from '@mui/material'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material'
 import {
   DndContext,
   closestCenter,
@@ -23,7 +29,6 @@ import {
 } from '@dnd-kit/core'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
-import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 import SortableItem from './SortableItem'
 
 /* Type declarations -------------------------------------------------------- */
@@ -33,15 +38,6 @@ export interface Waifu {
 }
 
 /* Styled components -------------------------------------------------------- */
-const ButtonsContainer = styled.div`
-  display: flex;
-  gap: 10px;
-
-  @media ${(props) => props.theme.media.mobile.portrait} {
-    flex-direction: column;
-  }
-`
-
 const Title = styled.div`
   display: flex;
   align-items: center;
@@ -58,7 +54,6 @@ const Board = styled.div`
 `
 
 const Container = styled.div`
-  min-height: 100px;
   margin: 20px 0px;
   background-color: ${(props) => props.theme.colors.main};
   border-radius: 4px;
@@ -67,11 +62,34 @@ const Container = styled.div`
   flex-direction: row;
 `
 
+const ModalTitle = styled(DialogTitle)`
+  text-align: center;
+  color: ${(props) => props.theme.palette.secondary.main};
+  font-weight: bold;
+`
+
+const ModalAction = styled(DialogActions)`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`
+
+const TitleButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface SorterPageProps {}
 
 const SorterPage: React.FC<SorterPageProps> = () => {
-  const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png')
+  const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
+  const [ openInput, setOpenInput ] = useState<boolean>(false)
+  const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
+  const [ openOutput, setOpenOutput ] = useState<boolean>(false)
   const [ output, setOutput ] = useState<string>('')
   const [ waifus, setWaifus ] = useState<Waifu[]>([])
 
@@ -86,6 +104,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
         w.push({ id, url })
     })
     setWaifus(w)
+    setOpenInput(false)
   }
 
   const onOutputClick = () => {
@@ -118,43 +137,85 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           <Title>
             Harem Sorter
           </Title>
+          <TitleButtons>
+            <LongButton
+              onClick={() => setOpenInput(true)}
+              variant="contained"
+            >
+              Enter Harem
+            </LongButton>
+            {
+              isValidString(input) &&
+                <LongButton
+                  onClick={() => {setOpenOutput(true); onOutputClick()}}
+                  variant="contained"
+                >
+                  Generate Mudae Commands
+                </LongButton>
+            }
+          </TitleButtons>
         </LargeTitle>
       </div>
+      <Dialog
+        open={openInput}
+        onClose={() => setOpenInput(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <ModalTitle>
+          Paste text from Mudae command ($mmi-s)
+        </ModalTitle>
+        <DialogContent>
+          <TextField
+            value={input}
+            placeholder={defaultText}
+            onChange={(e) => setInput(e.target.value)}
+            multiline
+            rows={15}
+          />
+        </DialogContent>
+        <ModalAction>
+          <LongButton
+            onClick={() => setOpenInput(false)}
+            variant="outlined"
+          >
+            Cancel
+          </LongButton>
+          <LongButton
+            onClick={onParseClick}
+            variant="contained"
+          >
+            Display my harem
+          </LongButton>
+        </ModalAction>
+      </Dialog>
+      <Dialog
+        open={openOutput}
+        onClose={() => setOpenOutput(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <ModalTitle>
+          Export Mudae Commands
+        </ModalTitle>
+        <DialogContent>
+          <TextField
+            value={output}
+            onChange={(e) => setOutput(e.target.value)}
+            multiline
+            rows={10}
+          />
+        </DialogContent>
+        <ModalAction>
+          <LongButton
+            onClick={() => setOpenOutput(false)}
+            variant="outlined"
+          >
+            Close
+          </LongButton>
+        </ModalAction>
+      </Dialog>
       <Board>
-        <FormBoldTitle>
-          Input ($mmi-s)
-          <ButtonsContainer>
-            <LongButton
-              variant="contained"
-              onClick={onParseClick}
-            >
-              Afficher mon harem
-            </LongButton>
-          </ButtonsContainer>
-        </FormBoldTitle>
-        <TextField
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          multiline
-          rows={4}
-        />
-        <FormBoldTitle>
-          Output
-          <ButtonsContainer>
-            <LongButton
-              variant="contained"
-              onClick={onOutputClick}
-            >
-              Générer la commande Mudae
-            </LongButton>
-          </ButtonsContainer>
-        </FormBoldTitle>
-        <TextField
-          value={output}
-          onChange={(e) => setOutput(e.target.value)}
-          multiline
-          rows={4}
-        />
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
