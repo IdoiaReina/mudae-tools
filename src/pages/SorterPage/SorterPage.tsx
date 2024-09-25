@@ -164,30 +164,28 @@ const SorterPage: React.FC<SorterPageProps> = () => {
 
   return (
     <div>
-      <div>
-        <LargeTitle>
-          <Title>
-            Harem Sorter
-          </Title>
-          <TitleButtons>
-            <LongButton
-              onClick={() => setOpenInput(true)}
-              variant="contained"
-            >
-              Enter Harem
-            </LongButton>
-            {
-              isValidString(input) &&
-                <LongButton
-                  onClick={() => {setOpenOutput(true); onOutputClick()}}
-                  variant="contained"
-                >
-                  Generate Mudae Commands
-                </LongButton>
-            }
-          </TitleButtons>
-        </LargeTitle>
-      </div>
+      <LargeTitle>
+        <Title>
+          Harem Sorter
+        </Title>
+        <TitleButtons>
+          <LongButton
+            onClick={() => setOpenInput(true)}
+            variant="contained"
+          >
+            Enter Harem
+          </LongButton>
+          {
+            isValidString(input) &&
+              <LongButton
+                onClick={() => {setOpenOutput(true); onOutputClick()}}
+                variant="contained"
+              >
+                Generate Mudae Commands
+              </LongButton>
+          }
+        </TitleButtons>
+      </LargeTitle>
       <Dialog
         open={openInput}
         onClose={() => setOpenInput(false)}
