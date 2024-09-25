@@ -50,8 +50,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Verify input
 - [x] Calculate + split output
 - [x] Add a copy to clipboard output
-- [ ] Change favicon
-- [ ] Change .exe icon
+- [x] Change favicon
+- [x] Change .exe icon
 - [ ] Verify package.json
 - [ ] Able to change colors + save in localstorage
 - [ ] add style to output
