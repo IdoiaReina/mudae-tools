@@ -31,10 +31,13 @@ import {
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
-import SorterItem from './SorterItem'
+import SortableItem from './SortableItem'
 
-/* Type imports ------------------------------------------------------------- */
-import type { Waifu } from 'types/Waifu'
+/* Type declarations -------------------------------------------------------- */
+export interface Waifu {
+  id: string;
+  url: string;
+}
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`
@@ -89,9 +92,9 @@ const Line = styled.div`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface SorterPageProps {}
+interface ImagePickerProps {}
 
-const SorterPage: React.FC<SorterPageProps> = () => {
+const ImagePicker: React.FC<ImagePickerProps> = () => {
   const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
   const [ openInput, setOpenInput ] = useState<boolean>(false)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
@@ -272,7 +275,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
             >
               {
                 waifus.map((w) => (
-                  <SorterItem
+                  <SortableItem
                     key={w.id}
                     id={w.id}
                     waifu={w}
@@ -287,4 +290,4 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   )
 }
 
-export default SorterPage
+export default ImagePicker
