@@ -224,7 +224,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       <Dialog
         open={openOutput}
         onClose={() => setOpenOutput(false)}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
       >
         <ModalTitle>
