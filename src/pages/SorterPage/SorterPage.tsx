@@ -93,7 +93,7 @@ interface SorterPageProps {}
 
 const SorterPage: React.FC<SorterPageProps> = () => {
   const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
-  const [ openInput, setOpenInput ] = useState<boolean>(false)
+  const [ openInput, setOpenInput ] = useState<boolean>(true)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
   const [ openOutput, setOpenOutput ] = useState<boolean>(false)
   const [ output, setOutput ] = useState<string[]>([])
@@ -202,6 +202,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
             onChange={(e) => setInput(e.target.value)}
             multiline
             rows={15}
+            size="small"
           />
         </DialogContent>
         <ModalAction>

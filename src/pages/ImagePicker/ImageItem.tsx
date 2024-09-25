@@ -8,11 +8,16 @@ import { CSS } from '@dnd-kit/utilities'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
+import {
+  ContentCopy,
+  Delete,
+} from '@mui/icons-material'
 
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
   width: 130px;
-  height: 220px;
+  height: 270px;
   margin: 5px;
   padding: 10px;
 `
@@ -33,12 +38,21 @@ const Image = styled.img`
   border-radius: 4px;
 `
 
+const Line = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  width: inherit;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface ImageItemProps {
   image: WaifuImage;
+  onDelete: () => void;
+  onCopy: () => void;
 }
 
-const SortableItem: React.FC<ImageItemProps> = ({ image }) => {
+const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy }) => {
   const {
     attributes,
     listeners,
@@ -59,10 +73,24 @@ const SortableItem: React.FC<ImageItemProps> = ({ image }) => {
     <Item
       ref={setNodeRef}
       style={style}
-      {...listeners}
-      {...attributes}
     >
-      <Card>
+      <Line onClick={(e) => e.stopPropagation()}>
+        <CustomIconButton
+          Icon={Delete}
+          variant="outlined"
+          color="error"
+          onClick={onDelete}
+        />
+        <CustomIconButton
+          Icon={ContentCopy}
+          variant="contained"
+          onClick={onCopy}
+        />
+      </Line>
+      <Card
+        {...listeners}
+        {...attributes}
+      >
         <Image
           src={image.url}
           alt={image.url}

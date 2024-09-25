@@ -14,6 +14,7 @@ import MainLayout from 'layouts/MainLayout/MainLayout'
 // Main Pages
 import SorterPage from 'pages/SorterPage/SorterPage'
 import NotFoundPage from 'pages/NotFoundPage/NotFoundPage'
+import ImagePickerPage from 'pages/ImagePicker/ImagePickerPage'
 
 /* Component declaration ---------------------------------------------------- */
 interface AuthRouterProps {}
@@ -37,6 +38,10 @@ const Router: React.FC<AuthRouterProps> = () => {
         <Route
           path="harem-sorter"
           element={<SorterPage />}
+        />
+        <Route
+          path="image-picker"
+          element={<ImagePickerPage />}
         />
         <Route
           path="*"
