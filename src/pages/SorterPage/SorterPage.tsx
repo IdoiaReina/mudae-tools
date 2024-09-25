@@ -215,6 +215,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           <LongButton
             onClick={onParseClick}
             variant="contained"
+            disabled={!input}
           >
             Display my harem
           </LongButton>
