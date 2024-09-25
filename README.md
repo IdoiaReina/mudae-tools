@@ -54,3 +54,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [ ] Change .exe icon
 - [ ] Verify package.json
 - [ ] Able to change colors + save in localstorage
+- [ ] add style to output
+- [ ] scroll diff on picker
