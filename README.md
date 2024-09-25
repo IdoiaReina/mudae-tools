@@ -52,7 +52,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Add a copy to clipboard output
 - [x] Change favicon
 - [x] Change .exe icon
-- [ ] Verify package.json
-- [ ] Able to change colors + save in localstorage
 - [ ] add style to output
 - [ ] scroll diff on picker
+- [ ] save state
+- [ ] Verify package.json
+- [ ] Able to change colors + save in localstorage

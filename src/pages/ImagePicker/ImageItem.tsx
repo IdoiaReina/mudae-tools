@@ -81,6 +81,7 @@ const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy }) => 
           color="error"
           onClick={onDelete}
         />
+        {image.id}
         <CustomIconButton
           Icon={ContentCopy}
           variant="contained"

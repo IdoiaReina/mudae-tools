@@ -86,6 +86,7 @@ const Line = styled.div`
   width: 100%;
   gap: 5px;
   align-items: center;
+  margin-bottom: 10px;
 `
 
 /* Component declaration ---------------------------------------------------- */
@@ -105,10 +106,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     const w: Waifu[] = []
     lines.forEach((line) => {
       if (!line.includes(' - http')) return
-      const id = line.split(' - http')[0]
+      const id = line.replaceAll(/\|[^-]+(?=-)/g, '').split(' - http')[0]
       const url = `http${line.split(' - http')[1]}`
       if (isValidString(id))
-        w.push({ id, url })
+        w.push({ id: id, url })
     })
     setWaifus(w)
     setOpenInput(false)
@@ -123,7 +124,6 @@ const SorterPage: React.FC<SorterPageProps> = () => {
 
     ids.forEach((id) => {
       const nextText = `${currentText + id}$`
-      console.log(nextText)
 
       if (nextText.length > maxLength) {
         result.push(currentText.trim().slice(0, -1))
@@ -173,7 +173,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
             onClick={() => setOpenInput(true)}
             variant="contained"
           >
-            Enter Harem
+            Input Harem
           </LongButton>
           {
             isValidString(input) &&
@@ -181,7 +181,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
                 onClick={() => {setOpenOutput(true); onOutputClick()}}
                 variant="contained"
               >
-                Generate Mudae Commands
+                Output Mudae commands
               </LongButton>
           }
         </TitleButtons>
@@ -228,7 +228,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
         fullWidth
       >
         <ModalTitle>
-          Export Mudae Commands
+          Copy Mudae commands one by one into discord
         </ModalTitle>
         <DialogContent>
           {

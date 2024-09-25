@@ -6,9 +6,10 @@ import Button from '@mui/material/Button'
 
 /* Component declaration ---------------------------------------------------- */
 const CustomIconButtonContainer = styled(Button)`
-  min-width: 40px;
-  width: 40px;
-  height: 40px;
+  min-width: 38px;
+  width: 38px;
+  min-height: 38px;
+  height: 38px;
   margin: 0 2px;
 
   display: flex;
