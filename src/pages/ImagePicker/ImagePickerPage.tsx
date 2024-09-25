@@ -3,14 +3,10 @@ import type { ReactNode } from 'react'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
-/* Module imports ----------------------------------------------------------- */
-
 /* Component imports -------------------------------------------------------- */
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
 import ImagePicker from './ImagePicker'
-
-/* Type imports ------------------------------------------------------------- */
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`
@@ -35,19 +31,21 @@ const Container = styled.div`
 interface ImagePickerPageProps {}
 
 const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
-  const onDeleteContainer = (index: number) => {
-    setWaifus(waifus.filter((_, i) => i !== index))
-  }
 
   const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>([
     {
       index: 0,
       render: <ImagePicker
         key={0}
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         onDeletePickerClick={() => onDeleteContainer(0)}
       />,
     },
   ])
+
+  const onDeleteContainer = (index: number) => {
+    setWaifus(waifus.filter((_, i) => i !== index))
+  }
 
   const onAddNewWaifu = () => {
     setWaifus(
