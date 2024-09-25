@@ -5,7 +5,9 @@ import styled from '@emotion/styled'
 /* Module imports ----------------------------------------------------------- */
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Waifu } from './ImagePickerPage'
+
+/* Type imports ------------------------------------------------------------- */
+import type { WaifuImage } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
@@ -32,12 +34,11 @@ const Image = styled.img`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface SortableItemProps {
-  id: string;
-  waifu: Waifu;
+interface ImageItemProps {
+  image: WaifuImage;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ id, waifu }) => {
+const SortableItem: React.FC<ImageItemProps> = ({ image }) => {
   const {
     attributes,
     listeners,
@@ -45,7 +46,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, waifu }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: id })
+  } = useSortable({ id: image.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -63,8 +64,8 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, waifu }) => {
     >
       <Card>
         <Image
-          src={waifu.url}
-          alt={waifu.id}
+          src={image.url}
+          alt={image.url}
           referrerPolicy="no-referrer"
         />
       </Card>

@@ -19,7 +19,6 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
-import { ContentCopy } from '@mui/icons-material'
 import {
   DndContext,
   closestCenter,
@@ -30,18 +29,12 @@ import {
 } from '@dnd-kit/core'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
-import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
-import SorterItem from './SorterItem'
+import SorterItem from './ImageItem'
 
 /* Type imports ------------------------------------------------------------- */
-import type { Waifu } from 'types/Waifu'
+import type { WaifuImage } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const Board = styled.div`
   width: 100%;
 
@@ -81,64 +74,31 @@ const TitleButtons = styled.div`
   align-items: center;
 `
 
-const Line = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 5px;
-  align-items: center;
-`
-
 /* Component declaration ---------------------------------------------------- */
-interface SorterPageProps {}
+interface ImagePickerProps {}
 
-const SorterPage: React.FC<SorterPageProps> = () => {
+const ImagePicker: React.FC<ImagePickerProps> = () => {
   const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
   const [ openInput, setOpenInput ] = useState<boolean>(false)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
-  const [ openOutput, setOpenOutput ] = useState<boolean>(false)
-  const [ output, setOutput ] = useState<string[]>([])
-  const [ waifus, setWaifus ] = useState<Waifu[]>([])
+  const [ images, setImages ] = useState<WaifuImage[]>([])
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
 
   const onParseClick = () => {
     const lines = input.split('\n')
-    const w: Waifu[] = []
-    lines.forEach((line) => {
-      if (!line.includes(' - http')) return
-      const id = line.split(' - http')[0]
-      const url = `http${line.split(' - http')[1]}`
-      if (isValidString(id))
-        w.push({ id, url })
+    const w: WaifuImage[] = []
+    lines.reverse().forEach((line, index) => {
+      if (!line.includes('. http')) return
+      const url = `http${line.split('. http')[1]}`
+      if (isValidString(url))
+        w.push({ id: index + 1, url })
     })
-    setWaifus(w)
+    setImages(w)
     setOpenInput(false)
   }
 
   const onOutputClick = () => {
-    const ids = waifus.map((w) => w.id)
-    const maxLength = 2000
-    const result: string[] = []
-    let currentText = '$smp '
-    let lastAddedId = ''
-
-    ids.forEach((id) => {
-      const nextText = `${currentText + id}$`
-      console.log(nextText)
-
-      if (nextText.length > maxLength) {
-        result.push(currentText.trim().slice(0, -1))
-        currentText = `$smp ${lastAddedId}$${id}$`
-      } else {
-        currentText = nextText
-        lastAddedId = id
-      }
-    })
-
-    if (currentText.trim()) {
-      result.push(currentText.trim().slice(0, -1))
-    }
-
-    setOutput(result)
+    //
   }
 
   const onCopyToClipBoard = async (value: string) => {
@@ -150,11 +110,11 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     }
   }
 
-  const handleDragEnd = (event: {active: {id: string}; over: {id: string}} ) => {
+  const handleDragEnd = (event: {active: {id: number}; over: {id: number}} ) => {
     const { active, over } = event
 
     if (active.id !== over.id) {
-      setWaifus((items) => {
+      setImages((items) => {
         const oldIndex = items.findIndex((i) => i.id === active.id)
         const newIndex = items.findIndex((i) => i.id === over.id)
         return arrayMove(items, oldIndex, newIndex)
@@ -165,25 +125,13 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   return (
     <div>
       <LargeTitle>
-        <Title>
-          Harem Sorter
-        </Title>
         <TitleButtons>
           <LongButton
             onClick={() => setOpenInput(true)}
             variant="contained"
           >
-            Enter Harem
+            Enter Waifu Image List
           </LongButton>
-          {
-            isValidString(input) &&
-              <LongButton
-                onClick={() => {setOpenOutput(true); onOutputClick()}}
-                variant="contained"
-              >
-                Generate Mudae Commands
-              </LongButton>
-          }
         </TitleButtons>
       </LargeTitle>
       <Dialog
@@ -193,7 +141,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
         fullWidth
       >
         <ModalTitle>
-          Paste text from Mudae command ($mmi-s)
+          Paste text from Mudae command ($imi-s Waifu)
         </ModalTitle>
         <DialogContent>
           <TextField
@@ -215,43 +163,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
             onClick={onParseClick}
             variant="contained"
           >
-            Display my harem
-          </LongButton>
-        </ModalAction>
-      </Dialog>
-      <Dialog
-        open={openOutput}
-        onClose={() => setOpenOutput(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <ModalTitle>
-          Export Mudae Commands
-        </ModalTitle>
-        <DialogContent>
-          {
-            output.map((value, index) => (
-              <Line key={index}>
-                <TextField
-                  value={value}
-                  multiline
-                  size="small"
-                />
-                <CustomIconButton
-                  Icon={ContentCopy}
-                  variant="contained"
-                  onClick={() => onCopyToClipBoard(value)}
-                />
-              </Line>
-            ))
-          }
-        </DialogContent>
-        <ModalAction>
-          <LongButton
-            onClick={() => setOpenOutput(false)}
-            variant="outlined"
-          >
-            Close
+            Display waifu's images
           </LongButton>
         </ModalAction>
       </Dialog>
@@ -265,14 +177,14 @@ const SorterPage: React.FC<SorterPageProps> = () => {
         >
           <Container>
             <SortableContext
-              items={waifus}
+              items={images}
               strategy={rectSortingStrategy}
             >
               {
-                waifus.map((w) => (
+                images.map((image) => (
                   <SorterItem
-                    key={w.id}
-                    waifu={w}
+                    key={image.id}
+                    image={image}
                   />
                 ))
               }
@@ -284,4 +196,4 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   )
 }
 
-export default SorterPage
+export default ImagePicker

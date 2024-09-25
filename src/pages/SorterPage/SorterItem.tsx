@@ -34,12 +34,11 @@ const Image = styled.img`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface SorterItemrops {
-  id: string;
+interface SorterItemProps {
   waifu: Waifu;
 }
 
-const SortableItem: React.FC<SorterItemrops> = ({ id, waifu }) => {
+const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
   const {
     attributes,
     listeners,
@@ -47,7 +46,7 @@ const SortableItem: React.FC<SorterItemrops> = ({ id, waifu }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: id })
+  } = useSortable({ id: waifu.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
