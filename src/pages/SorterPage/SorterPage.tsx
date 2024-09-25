@@ -240,6 +240,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
                 <TextField
                   value={value}
                   multiline
+                  size="small"
                 />
                 <CustomIconButton
                   Icon={ContentCopy}

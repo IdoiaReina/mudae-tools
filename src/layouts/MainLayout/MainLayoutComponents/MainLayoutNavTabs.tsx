@@ -29,8 +29,8 @@ const tabs = [
     path: 'image-picker',
   },
   {
-    label: 'Custom Image Helper',
-    path: 'custom-image-helper',
+    label: 'Custom Image Maker',
+    path: 'custom-image-maker',
   },
 ]
 
