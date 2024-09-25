@@ -18,7 +18,7 @@ function createWindow() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
-    icon: __dirname + '/components/MainLogo/logo.png',
+    icon: __dirname + 'components/MainLogo/logo.png',
   })
 
   if (app.isPackaged) {
