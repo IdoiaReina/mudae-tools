@@ -5,7 +5,9 @@ import styled from '@emotion/styled'
 /* Module imports ----------------------------------------------------------- */
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Waifu } from './SorterPage'
+
+/* Type imports ------------------------------------------------------------- */
+import type { Waifu } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
@@ -32,12 +34,11 @@ const Image = styled.img`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface SortableItemProps {
-  id: string;
+interface SorterItemProps {
   waifu: Waifu;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ id, waifu }) => {
+const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
   const {
     attributes,
     listeners,
@@ -45,7 +46,7 @@ const SortableItem: React.FC<SortableItemProps> = ({ id, waifu }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: id })
+  } = useSortable({ id: waifu.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
