@@ -19,6 +19,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
+import { Delete } from '@mui/icons-material'
 import {
   DndContext,
   closestCenter,
@@ -29,13 +30,18 @@ import {
 } from '@dnd-kit/core'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
+import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import SorterItem from './ImageItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
-import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 
 /* Styled components -------------------------------------------------------- */
+const ContainerDiv = styled.div`
+  width: 100%;
+`
+
 const Board = styled.div`
   width: 100%;
 
@@ -76,9 +82,11 @@ const TitleButtons = styled.div`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface ImagePickerProps {}
+interface ImagePickerProps {
+  onDeletePickerClick: () => void;
+}
 
-const ImagePicker: React.FC<ImagePickerProps> = () => {
+const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick }) => {
   const defaultName = 'Ai Hoshino'
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
   const [ openInput, setOpenInput ] = useState<boolean>(true)
@@ -128,7 +136,7 @@ const ImagePicker: React.FC<ImagePickerProps> = () => {
   }
 
   return (
-    <div>
+    <ContainerDiv>
       <LargeTitle>
         {waifuName}
         <TitleButtons>
@@ -138,6 +146,12 @@ const ImagePicker: React.FC<ImagePickerProps> = () => {
           >
             Enter Waifu Image List
           </LongButton>
+          <CustomIconButton
+            Icon={Delete}
+            variant="outlined"
+            color="error"
+            onClick={onDeletePickerClick}
+          />
         </TitleButtons>
       </LargeTitle>
       <Dialog
@@ -214,7 +228,7 @@ const ImagePicker: React.FC<ImagePickerProps> = () => {
           </Container>
         </DndContext>
       </Board>
-    </div>
+    </ContainerDiv>
   )
 }
 

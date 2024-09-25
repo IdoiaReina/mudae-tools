@@ -28,10 +28,10 @@ const tabs = [
     label: 'Image Picker',
     path: 'image-picker',
   },
-  {
-    label: 'Custom Image Maker',
-    path: 'custom-image-maker',
-  },
+  // {
+  //   label: 'Custom Image Maker',
+  //   path: 'custom-image-maker',
+  // },
 ]
 
 /* Styled components -------------------------------------------------------- */

@@ -1,4 +1,5 @@
 /* Framework imports -------------------------------------------------------- */
+import type { ReactNode } from 'react'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -24,14 +25,41 @@ const TitleButtons = styled.div`
   align-items: center;
 `
 
+const Container = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface ImagePickerPageProps {}
 
 const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
-  const [ waifus, setWaifus ] = useState<string[]>([ 'new' ])
+  const onDeleteContainer = (index: number) => {
+    setWaifus(waifus.filter((_, i) => i !== index))
+  }
+
+  const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>([
+    {
+      index: 0,
+      render: <ImagePicker
+        key={0}
+        onDeletePickerClick={() => onDeleteContainer(0)}
+      />,
+    },
+  ])
 
   const onAddNewWaifu = () => {
-    setWaifus([ ...waifus, 'new' ])
+    setWaifus(
+      [ ...waifus,
+        {
+          index: waifus.length - 1,
+          render: <ImagePicker
+            key={waifus.length - 1}
+            onDeletePickerClick={() => onDeleteContainer(waifus.length - 1)}
+          />,
+        },
+      ])
   }
 
   return (
@@ -41,22 +69,17 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
           Image Picker
         </Title>
         <TitleButtons>
-          {
-            waifus.length > 1 &&
-              <LongButton
-                onClick={onAddNewWaifu}
-                variant="contained"
-              >
-                Add another waifu
-              </LongButton>
-          }
+          <LongButton
+            onClick={onAddNewWaifu}
+            variant="contained"
+          >
+            Add another waifu
+          </LongButton>
         </TitleButtons>
       </LargeTitle>
-      {
-        waifus.map((_, index) =>
-          <ImagePicker key={index} />,
-        )
-      }
+      <Container>
+        {waifus.map((picker) => picker.render)}
+      </Container>
     </div>
   )
 }
