@@ -9,7 +9,7 @@
     "start": "concurrently \"react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "react-build": "react-scripts build",
     "electron-build": "electron-builder",
-    "build": "NODE_ENV=production react-build && yarn electron-build",
+    "build": "cross-env NODE_ENV=production yarn react-build && yarn electron-build",
     "package": "electron-builder --dir",
     "make": "electron-builder --win --mac --linux",
     "postinstall": "electron-builder install-app-deps",
