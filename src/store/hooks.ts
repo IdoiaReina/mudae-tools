@@ -1,12 +1,7 @@
 /* Framework imports -------------------------------------------------------- */
-import { useMemo } from 'react'
 import * as Redux from 'react-redux'
 
 /* Module imports ----------------------------------------------------------- */
-import {
-  persistor,
-  store,
-} from 'store/store'
 
 /* Type imports ------------------------------------------------------------- */
 import type {
