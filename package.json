@@ -1,6 +1,7 @@
 {
   "name": "mudae_tools",
-  "version": "0.1.0",
+  "productName": "Mudae Tools",
+  "version": "0.1.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",

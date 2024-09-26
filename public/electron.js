@@ -1,6 +1,5 @@
 import {app, BrowserWindow} from 'electron'
 import path from 'path'
-import url from 'url'
 import { fileURLToPath } from 'url';
 import { createServer } from 'http-server';
 
@@ -18,7 +17,6 @@ function createWindow() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
-    icon: __dirname + 'components/MainLogo/logo.png',
   })
 
   if (app.isPackaged) {
