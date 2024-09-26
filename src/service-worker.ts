@@ -10,8 +10,8 @@
 
 import { clientsClaim } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
-import { 
-  precacheAndRoute, 
+import {
+  precacheAndRoute,
   createHandlerBoundToURL,
 } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
@@ -83,7 +83,7 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
         console.error('Error in skipping waiting : ', error)
       })
       .finally(() => {
-        console.log('Skipping waiting')
+        console.info('Skipping waiting')
       })
   }
 })

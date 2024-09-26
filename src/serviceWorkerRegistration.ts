@@ -38,7 +38,7 @@ function registerValidSW(swUrl: string, config?: Config): void {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
-              console.log(
+              console.info(
                 'New content is available and will be used when all ' +
                 'tabs for this page are closed. See https://cra.link/PWA.',
               )
@@ -51,7 +51,7 @@ function registerValidSW(swUrl: string, config?: Config): void {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
-              console.log('Content is cached for offline use.')
+              console.info('Content is cached for offline use.')
 
               // Execute callback
               if (config && config.onSuccess) {
@@ -96,7 +96,7 @@ async function checkValidServiceWorker(swUrl: string, config?: Config): Promise<
       registerValidSW(swUrl, config)
     }
   } catch(error) {
-    console.log('No internet connection found. App is running in offline mode. Error :', error)
+    console.info('No internet connection found. App is running in offline mode. Error :', error)
   }
 }
 
@@ -122,7 +122,7 @@ export function register(config?: Config): void {
         try {
           await navigator.serviceWorker.ready //.then(() => {
         } catch(error) {
-          console.log(
+          console.info(
             'This web app is being served cache-first by a service ' +
             'worker. To learn more, visit https://cra.link/PWA',
           )
