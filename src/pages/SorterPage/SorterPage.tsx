@@ -108,6 +108,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   const [ output, setOutput ] = useState<string[]>([])
   const [ waifus, setWaifus ] = useState<Waifu[]>(savedWaifus || [])
 
+  useEffect(() => {
+    dispatch(setSavedWaifus(waifus))
+  }, [ waifus ])
+
   const onParseClick = () => {
     const lines = input.split('\n')
     const w: Waifu[] = []
@@ -168,10 +172,6 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       })
     }
   }
-
-  useEffect(() => {
-    dispatch(setSavedWaifus(waifus))
-  }, [ waifus ])
 
   return (
     <div>

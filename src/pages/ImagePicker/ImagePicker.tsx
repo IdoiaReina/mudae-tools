@@ -1,5 +1,8 @@
 /* Framework imports -------------------------------------------------------- */
-import React, { useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
@@ -36,6 +39,14 @@ import SorterItem from './ImageItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedPickers,
+  setSavedPickers,
+} from 'store/slices/pickerSlice'
 
 /* Styled components -------------------------------------------------------- */
 const ContainerDiv = styled.div`
@@ -85,11 +96,19 @@ interface ImagePickerProps {
 const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index }) => {
   const defaultName = 'Ai Hoshino'
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
-  const [ openInput, setOpenInput ] = useState<boolean>(true)
+  const dispatch = useAppDispatch()
+  const savedPickers = useAppSelector(selectSavedPickers)
+  const [ openInput, setOpenInput ] = useState<boolean>((savedPickers.find((val) => val.index === index)?.images?.length || 0) === 0)
   const [ waifuName, setWaifuName ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultName)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
-  const [ images, setImages ] = useState<WaifuImage[]>([])
+  const [ images, setImages ] = useState<WaifuImage[]>(savedPickers.find((val) => val.index === index)?.images || [])
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
+
+  console.log(savedPickers)
+
+  useEffect(() => {
+    dispatch(setSavedPickers(savedPickers.map((value) => value.index === index ? { ...value, images } : value)))
+  }, [ images ])
 
   const onParseClick = () => {
     const lines = input.split('\n')

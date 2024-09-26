@@ -1,6 +1,9 @@
 /* Framework imports -------------------------------------------------------- */
 import type { ReactNode } from 'react'
-import React, { useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
@@ -43,21 +46,38 @@ interface ImagePickerPageProps {}
 const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
-  const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>(
-    savedPickers.map((_, index) => (
-      {
-        index,
+  const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>([])
+
+  useEffect(() => {
+    if (savedPickers.length) {
+      setWaifus( savedPickers.map((_, index) => (
+        {
+          index,
+          render: (
+            <ImagePicker
+              key={index}
+              index={index}
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              onDeletePickerClick={() => onDeleteContainer(index)}
+            />
+          ),
+        }
+      )))
+    } else {
+      setWaifus( [ {
+        index: 0,
         render: (
           <ImagePicker
-            key={index}
-            index={index}
+            key={0}
+            index={0}
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onDeletePickerClick={() => onDeleteContainer(index)}
+            onDeletePickerClick={() => onDeleteContainer(0)}
           />
         ),
-      }
-    )),
-  )
+      } ])
+      dispatch(setSavedPickers([ { index: 0, images: []} ]))
+    }
+  }, [])
 
   const onDeleteContainer = (index: number) => {
     setWaifus(waifus.filter((_, i) => i !== index))
@@ -65,7 +85,7 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
   }
 
   const onAddNewWaifu = () => {
-    const index = waifus.length - 1
+    const index = waifus.length
     setWaifus([
       ...waifus,
       {
