@@ -12,6 +12,14 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedWaifus,
+  setSavedWaifus,
+} from 'store/slices/sorterSlice'
 import { isValidString } from 'helpers/isValidString'
 
 /* Component imports -------------------------------------------------------- */
@@ -38,14 +46,6 @@ import SorterItem from './SorterItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
-import {
-  useAppDispatch,
-  useAppSelector,
-} from 'store/hooks'
-import {
-  selectSavedWaifus,
-  setSavedWaifus,
-} from 'store/slices/sorterSlice'
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`

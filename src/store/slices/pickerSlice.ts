@@ -34,6 +34,6 @@ export const { setSavedPickers } = pickerSlice.actions
 
 export default pickerSlice.reducer
 
-export const selectSavedWaifus = (state: RootState): SavedPicker[] => {
+export const selectSavedPickers = (state: RootState): SavedPicker[] => {
   return state.picker.savedPickers
 }
