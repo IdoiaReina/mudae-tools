@@ -79,9 +79,10 @@ const TitleButtons = styled.div`
 /* Component declaration ---------------------------------------------------- */
 interface ImagePickerProps {
   onDeletePickerClick: () => void;
+  index: number;
 }
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick }) => {
+const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index }) => {
   const defaultName = 'Ai Hoshino'
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
   const [ openInput, setOpenInput ] = useState<boolean>(true)

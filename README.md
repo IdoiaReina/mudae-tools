@@ -58,3 +58,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [ ] save state
 - [ ] Verify package.json
 - [ ] Able to change colors + save in localstorage
+- [ ] Upload on github pages

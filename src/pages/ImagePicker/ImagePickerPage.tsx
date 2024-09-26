@@ -31,15 +31,17 @@ const Container = styled.div`
 interface ImagePickerPageProps {}
 
 const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
-
   const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>([
     {
       index: 0,
-      render: <ImagePicker
-        key={0}
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        onDeletePickerClick={() => onDeleteContainer(0)}
-      />,
+      render: (
+        <ImagePicker
+          key={0}
+          index={0}
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          onDeletePickerClick={() => onDeleteContainer(0)}
+        />
+      ),
     },
   ])
 
@@ -48,14 +50,18 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
   }
 
   const onAddNewWaifu = () => {
+    const index = waifus.length - 1
     setWaifus(
       [ ...waifus,
         {
-          index: waifus.length - 1,
-          render: <ImagePicker
-            key={waifus.length - 1}
-            onDeletePickerClick={() => onDeleteContainer(waifus.length - 1)}
-          />,
+          index,
+          render: (
+            <ImagePicker
+              key={index}
+              index={index}
+              onDeletePickerClick={() => onDeleteContainer(index)}
+            />
+          ),
         },
       ])
   }
