@@ -33,10 +33,6 @@
       "uninstallDisplayName": "Mudae Tools"
     },
     "appId": "com.votre.app",
-    "author": {
-      "name": "Idoia",
-      "email": ".idoia."
-    },
     "files": [
       "build/**/*",
       "public/electron.js"
