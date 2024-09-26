@@ -1,5 +1,8 @@
 /* Framework imports -------------------------------------------------------- */
-import React, { useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
@@ -35,6 +38,14 @@ import SorterItem from './SorterItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedWaifus,
+  setSavedWaifus,
+} from 'store/slices/sorterSlice'
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`
@@ -88,12 +99,14 @@ interface SorterPageProps {}
 
 const SorterPage: React.FC<SorterPageProps> = () => {
   const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
-  const [ openInput, setOpenInput ] = useState<boolean>(true)
+  const dispatch = useAppDispatch()
+  const savedWaifus = useAppSelector(selectSavedWaifus)
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
+  const [ openInput, setOpenInput ] = useState<boolean>(savedWaifus.length === 0)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
   const [ openOutput, setOpenOutput ] = useState<boolean>(false)
   const [ output, setOutput ] = useState<string[]>([])
-  const [ waifus, setWaifus ] = useState<Waifu[]>([])
-  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
+  const [ waifus, setWaifus ] = useState<Waifu[]>(savedWaifus || [])
 
   const onParseClick = () => {
     const lines = input.split('\n')
@@ -155,6 +168,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       })
     }
   }
+
+  useEffect(() => {
+    dispatch(setSavedWaifus(waifus))
+  }, [ waifus ])
 
   return (
     <div>

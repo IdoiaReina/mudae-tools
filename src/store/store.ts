@@ -10,11 +10,13 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 /* Redux slice imports ------------------------------------------------------ */
-import themeReducer from './slices/themeSlice'
+import themeSlice from './slices/themeSlice'
+import sorterSlice from './slices/sorterSlice'
 
 /* Store configuration ------------------------------------------------------ */
 const appReducer = RTK.combineReducers({
-  theme: themeReducer,
+  theme: themeSlice,
+  sorter: sorterSlice,
 })
 
 const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: RTK.PayloadAction) => {
