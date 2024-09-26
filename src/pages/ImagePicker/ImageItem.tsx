@@ -17,9 +17,8 @@ import {
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
   width: 130px;
-  height: 270px;
+  height: 248px;
   margin: 5px;
-  padding: 10px;
 `
 
 const Card = styled.div`
@@ -41,8 +40,10 @@ const Image = styled.img`
 const Line = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 5px;
   width: inherit;
+  font-weight: bold;
 `
 
 /* Component declaration ---------------------------------------------------- */

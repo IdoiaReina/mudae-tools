@@ -44,21 +44,16 @@ const ContainerDiv = styled.div`
 
 const Board = styled.div`
   width: 100%;
-
-  .griditemUI {
-  background-color: #949c9c;
-  border: 2px solid #fff;
-  line-height: 100px;
-  }
+  background-color: ${(props) => props.theme.colors.main};
+  border-radius: 4px;
+  margin-bottom: 10px;
 `
 
 const Container = styled.div`
-  margin: 20px 0px;
-  background-color: ${(props) => props.theme.colors.main};
-  border-radius: 4px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  margin: 5px;
 `
 
 const ModalTitle = styled(DialogTitle)`
@@ -144,7 +139,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick }) => {
             onClick={() => setOpenInput(true)}
             variant="contained"
           >
-            Enter Waifu Image List
+            Input image list
           </LongButton>
           <CustomIconButton
             Icon={Delete}
@@ -208,6 +203,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick }) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           onDragEnd={handleDragEnd}
+          autoScroll
         >
           <Container>
             <SortableContext

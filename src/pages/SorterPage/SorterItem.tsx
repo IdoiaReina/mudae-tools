@@ -12,19 +12,14 @@ import type { Waifu } from 'types/Waifu'
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
   width: 130px;
-  height: 220px;
+  height: 202px;
   margin: 5px;
-  padding: 10px;
-`
-
-const Card = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 13px;
   border-radius: 4px;
-  width: 130px;
 `
 
 const Image = styled.img`
@@ -62,13 +57,11 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
       {...listeners}
       {...attributes}
     >
-      <Card>
-        <Image
-          src={waifu.url}
-          alt={waifu.id}
-          referrerPolicy="no-referrer"
-        />
-      </Card>
+      <Image
+        src={waifu.url}
+        alt={waifu.id}
+        referrerPolicy="no-referrer"
+      />
     </Item>
   )
 }

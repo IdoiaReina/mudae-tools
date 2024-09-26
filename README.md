@@ -54,6 +54,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Change .exe icon
 - [x] add style to output
 - [ ] scroll diff on picker
+- [ ] waifu name as input
 - [ ] save state
 - [ ] Verify package.json
 - [ ] Able to change colors + save in localstorage
