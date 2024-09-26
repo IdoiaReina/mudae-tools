@@ -1,6 +1,6 @@
 {
   "name": "mudae_tools",
-  "version": "1.1",
+  "version": "1.0.3",
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",
@@ -89,8 +89,6 @@
     "concurrently": "^9.0.1",
     "cross-env": "^7.0.3",
     "date-fns": "^3.6.0",
-    "formik": "^2.4.5",
-    "formik-mui": "^5.0.0-alpha.0",
     "http-server": "^14.1.1",
     "path": "^0.12.7",
     "react": "^18.2.0",
@@ -108,8 +106,7 @@
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^7.0.0",
     "workbox-strategies": "^7.0.0",
-    "yarn-upgrade-all": "^0.7.2",
-    "yup": "^1.4.0"
+    "yarn-upgrade-all": "^0.7.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
