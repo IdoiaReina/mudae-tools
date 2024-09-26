@@ -91,20 +91,23 @@ const TitleButtons = styled.div`
 interface ImagePickerProps {
   onDeletePickerClick: () => void;
   index: number;
+  name: string;
+  onChangeName: (value: string) => void;
 }
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index }) => {
-  const defaultName = 'Ai Hoshino'
+const ImagePicker: React.FC<ImagePickerProps> = ({
+  onDeletePickerClick,
+  index,
+  name,
+  onChangeName,
+}) => {
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
   const [ openInput, setOpenInput ] = useState<boolean>((savedPickers.find((val) => val.index === index)?.images?.length || 0) === 0)
-  const [ waifuName, setWaifuName ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultName)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
   const [ images, setImages ] = useState<WaifuImage[]>(savedPickers.find((val) => val.index === index)?.images || [])
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
-
-  console.log(savedPickers)
 
   useEffect(() => {
     dispatch(setSavedPickers(savedPickers.map((value) => value.index === index ? { ...value, images } : value)))
@@ -124,7 +127,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index })
   }
 
   const onCopyToClipBoard = async (image: WaifuImage) => {
-    const value = `$c ${waifuName}$${image.id}`
+    const value = `$c ${name}$${image.id}`
 
     if (typeof ClipboardItem !== 'undefined') {
       const html = new Blob([ value ], { type: 'text/html' })
@@ -153,7 +156,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index })
   return (
     <ContainerDiv>
       <LargeTitle>
-        {waifuName}
+        {name}
         <TitleButtons>
           <LongButton
             onClick={() => setOpenInput(true)}
@@ -180,16 +183,16 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index })
         </ModalTitle>
         <DialogContent>
           <FormBoldTitle>
-            Waifu's name
+            Waifu's name (as displayed in Mudae)
           </FormBoldTitle>
           <TextField
-            value={waifuName}
-            placeholder={defaultName}
-            onChange={(e) => setWaifuName(e.target.value)}
+            value={name}
+            placeholder="Iron Man (Tony Stark)"
+            onChange={(e) => onChangeName(e.target.value)}
             size="small"
           />
           <FormBoldTitle>
-            Waifu's images
+            Waifu's images ($imi-s WaifuName)
           </FormBoldTitle>
           <TextField
             value={input}
@@ -210,7 +213,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onDeletePickerClick, index })
           <LongButton
             onClick={onParseClick}
             variant="contained"
-            disabled={!input || !waifuName}
+            disabled={!input || !name}
           >
             Display waifu's images
           </LongButton>

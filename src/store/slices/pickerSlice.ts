@@ -9,7 +9,9 @@ import type { WaifuImage } from 'types/Waifu'
 export interface SavedPicker {
   index: number;
   images: WaifuImage[];
+  name: string;
 }
+
 export interface Picker {
   savedPickers: SavedPicker[];
 }

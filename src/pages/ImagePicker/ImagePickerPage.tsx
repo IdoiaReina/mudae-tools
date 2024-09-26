@@ -1,9 +1,5 @@
 /* Framework imports -------------------------------------------------------- */
-import type { ReactNode } from 'react'
-import React, {
-  useEffect,
-  useState,
-} from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
@@ -15,6 +11,7 @@ import {
   selectSavedPickers,
   setSavedPickers,
 } from 'store/slices/pickerSlice'
+import { getRandomInt } from 'helpers/getRandomInt'
 
 /* Component imports -------------------------------------------------------- */
 import LargeTitle from 'components/LargeTitle/LargeTitle'
@@ -44,62 +41,26 @@ const Container = styled.div`
 interface ImagePickerPageProps {}
 
 const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
+  const defaultName = process.env.NODE_ENV === 'production' ? '' : 'Ai Hoshino'
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
-  const [ waifus, setWaifus ] = useState<{render: ReactNode; index: number}[]>([])
 
   useEffect(() => {
-    if (savedPickers.length) {
-      setWaifus( savedPickers.map((_, index) => (
-        {
-          index,
-          render: (
-            <ImagePicker
-              key={index}
-              index={index}
-              // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              onDeletePickerClick={() => onDeleteContainer(index)}
-            />
-          ),
-        }
-      )))
-    } else {
-      setWaifus( [ {
-        index: 0,
-        render: (
-          <ImagePicker
-            key={0}
-            index={0}
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onDeletePickerClick={() => onDeleteContainer(0)}
-          />
-        ),
-      } ])
-      dispatch(setSavedPickers([ { index: 0, images: []} ]))
+    if (!savedPickers.length) {
+      dispatch(setSavedPickers([ { images: [], index: 0, name: defaultName } ] ))
     }
   }, [])
 
   const onDeleteContainer = (index: number) => {
-    setWaifus(waifus.filter((_, i) => i !== index))
-    dispatch(setSavedPickers(savedPickers.filter((value) => value.index === index)))
+    dispatch(setSavedPickers(savedPickers.filter((saved) => saved.index !== index) ))
   }
 
   const onAddNewWaifu = () => {
-    const index = waifus.length
-    setWaifus([
-      ...waifus,
-      {
-        index,
-        render: (
-          <ImagePicker
-            key={index}
-            index={index}
-            onDeletePickerClick={() => onDeleteContainer(index)}
-          />
-        ),
-      },
-    ])
-    dispatch(setSavedPickers([ ...savedPickers, { index, images: []} ]))
+    dispatch(setSavedPickers([ ...savedPickers, { images: [], index: getRandomInt(1000000000), name: defaultName } ] ))
+  }
+
+  const onChangeName = (value: string, index: number) => {
+    dispatch(setSavedPickers(savedPickers.map((saved) => saved.index === index ? { ...saved, name: value } : saved) ))
   }
 
   return (
@@ -118,7 +79,17 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
         </TitleButtons>
       </LargeTitle>
       <Container>
-        {waifus.map((picker) => picker.render)}
+        {
+          savedPickers.map((picker) => (
+            <ImagePicker
+              key={picker.index}
+              index={picker.index}
+              onDeletePickerClick={() => onDeleteContainer(picker.index)}
+              name={picker.name}
+              onChangeName={(value) => onChangeName(value, picker.index)}
+            />
+          ))
+        }
       </Container>
     </div>
   )
