@@ -53,9 +53,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Change favicon
 - [x] Change .exe icon
 - [x] add style to output
+- [x] save state
 - [ ] scroll diff on picker
 - [ ] waifu name as input
-- [ ] save state
 - [ ] Verify package.json
 - [ ] Able to change colors + save in localstorage
 - [ ] Upload on github pages
