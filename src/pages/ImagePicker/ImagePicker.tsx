@@ -12,6 +12,14 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedPickers,
+  setSavedPickers,
+} from 'store/slices/pickerSlice'
 import { isValidString } from 'helpers/isValidString'
 
 /* Component imports -------------------------------------------------------- */
@@ -39,14 +47,6 @@ import SorterItem from './ImageItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
-import {
-  useAppDispatch,
-  useAppSelector,
-} from 'store/hooks'
-import {
-  selectSavedPickers,
-  setSavedPickers,
-} from 'store/slices/pickerSlice'
 
 /* Styled components -------------------------------------------------------- */
 const ContainerDiv = styled.div`

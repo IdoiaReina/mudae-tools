@@ -3,16 +3,16 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-
-/* Type imports ------------------------------------------------------------- */
-import type { WaifuImage } from 'types/Waifu'
-import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import {
   ContentCopy,
   Delete,
 } from '@mui/icons-material'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
+
+/* Type imports ------------------------------------------------------------- */
+import type { WaifuImage } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
 const Item = styled.div`
