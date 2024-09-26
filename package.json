@@ -1,7 +1,6 @@
 {
   "name": "mudae_tools",
-  "productName": "Mudae Tools",
-  "version": "0.1.1",
+  "version": "1.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": ".",
@@ -28,6 +27,11 @@
     "tsc:ci": "tsc --noEmit"
   },
   "build": {
+    "productName": "Mudae Tools",
+    "nsis": {
+      "artifactName": "Mudae Tools.setup.${version}.${ext}",
+      "uninstallDisplayName": "Mudae Tools"
+    },
     "appId": "com.votre.app",
     "files": [
       "build/**/*",
