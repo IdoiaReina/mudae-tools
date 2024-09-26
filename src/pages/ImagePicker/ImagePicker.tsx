@@ -153,6 +153,12 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
     }
   }
 
+  const onCloseModal = () => {
+    setOpenInput(false)
+    if (!name && !images.length)
+      onDeletePickerClick()
+  }
+
   return (
     <ContainerDiv>
       <LargeTitle>
@@ -174,7 +180,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
       </LargeTitle>
       <Dialog
         open={openInput}
-        onClose={() => setOpenInput(false)}
+        onClose={onCloseModal}
         maxWidth="md"
         fullWidth
       >
@@ -205,7 +211,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
         </DialogContent>
         <ModalAction>
           <LongButton
-            onClick={() => setOpenInput(false)}
+            onClick={onCloseModal}
             variant="outlined"
           >
             Cancel
