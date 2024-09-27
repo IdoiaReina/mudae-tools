@@ -186,15 +186,12 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           >
             Input Harem
           </LongButton>
-          {
-            isValidString(input) &&
-              <LongButton
-                onClick={() => {setOpenOutput(true); onOutputClick()}}
-                variant="contained"
-              >
-                Output Mudae commands
-              </LongButton>
-          }
+          <LongButton
+            onClick={() => {setOpenOutput(true); onOutputClick()}}
+            variant="contained"
+          >
+            Output Mudae commands
+          </LongButton>
         </TitleButtons>
       </LargeTitle>
       <Dialog
