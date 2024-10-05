@@ -1,3 +1,0 @@
-[submodule "src/API/swagger-api-to-typescript-code-generator"]
-	path = src/API/swagger-api-to-typescript-code-generator
-	url = ../../outils/swagger-api-to-typescript-code-generator.git
