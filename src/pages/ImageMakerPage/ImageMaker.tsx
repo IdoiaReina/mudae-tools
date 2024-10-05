@@ -36,10 +36,9 @@ const LineContainer = styled.div`
 `
 
 /* Component declaration ---------------------------------------------------- */
-interface ImageMakerPageProps {
-}
+interface ImageMakerProps {}
 
-const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
+const ImageMaker: React.FC<ImageMakerProps> = () => {
   const [ source, setSource ] = useState<string | HTMLImageElement>(defaultSourceUrl)
   const [ value, setValue ] = useState<string>(defaultSourceUrl)
 
@@ -90,4 +89,4 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
 
 }
 
-export default ImageMakerPage
+export default ImageMaker
