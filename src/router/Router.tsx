@@ -14,7 +14,8 @@ import MainLayout from 'layouts/MainLayout/MainLayout'
 // Main Pages
 import SorterPage from 'pages/SorterPage/SorterPage'
 import NotFoundPage from 'pages/NotFoundPage/NotFoundPage'
-import ImagePickerPage from 'pages/ImagePicker/ImagePickerPage'
+import ImagePickerPage from 'pages/ImagePickerPage/ImagePickerPage'
+import ImageMakerPage from 'pages/ImageMakerPage/ImageMakerPage'
 
 /* Component declaration ---------------------------------------------------- */
 interface AuthRouterProps {}
@@ -42,6 +43,10 @@ const Router: React.FC<AuthRouterProps> = () => {
         <Route
           path="image-picker"
           element={<ImagePickerPage />}
+        />
+        <Route
+          path="custom-image-maker"
+          element={<ImageMakerPage />}
         />
         <Route
           path="*"

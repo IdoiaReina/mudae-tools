@@ -9,7 +9,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { frFR } from '@mui/x-date-pickers/locales'
 import { fr } from 'date-fns/locale'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { PersistGate } from 'redux-persist/integration/react'
 import {
@@ -34,7 +34,7 @@ root.render(
   <React.StrictMode>
     <Redux.Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BrowserRouter>
+        <HashRouter>
           <Theme>
             <LocalizationProvider
               adapterLocale={fr}
@@ -57,7 +57,7 @@ root.render(
               <App />
             </LocalizationProvider>
           </Theme>
-        </BrowserRouter>
+        </HashRouter>
       </PersistGate>
     </Redux.Provider>
   </React.StrictMode>,
