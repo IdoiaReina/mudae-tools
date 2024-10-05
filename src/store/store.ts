@@ -13,12 +13,14 @@ import storage from 'redux-persist/lib/storage'
 import themeSlice from './slices/themeSlice'
 import sorterSlice from './slices/sorterSlice'
 import pickerSlice from './slices/pickerSlice'
+import makerSlice from './slices/makerSlice'
 
 /* Store configuration ------------------------------------------------------ */
 const appReducer = RTK.combineReducers({
   theme: themeSlice,
   sorter: sorterSlice,
   picker: pickerSlice,
+  maker: makerSlice,
 })
 
 const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: RTK.PayloadAction) => {
