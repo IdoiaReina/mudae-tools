@@ -52,10 +52,11 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Add a copy to clipboard output
 - [x] Change favicon
 - [x] Change .exe icon
-- [x] add style to output
-- [x] save state
-- [ ] scroll diff on picker
-- [ ] waifu name as input
-- [ ] Verify package.json
+- [x] Add style to output
+- [x] Save state
+- [x] Verify package.json
+- [ ] Scroll diff on picker
 - [ ] Able to change colors + save in localstorage
 - [ ] Upload on github pages
+- [ ] Take a screenshot of harem
+- [ ] Image maker
