@@ -113,6 +113,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   name,
   onDeleteContainer,
 }) => {
+  const defaultCrop = { unit: 'px', width: 225, height: 350, x: 0, y: 0 }
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
   const tokens = useAppSelector(selectImgurToken)
@@ -121,8 +122,9 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
   const [ link, setLink ] = useState<string>(savedMakers.find((val) => val.id === id)?.link || '')
-  const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
+  const [ crop, setCrop ] = useState<Crop>(savedMakers.find((val) => val.id === id)?.crop as Crop || defaultCrop)
   const [ isUploading, setIsUploading ] = useState<boolean>(false)
+  const [ first, setFirst ] = useState<'first' | 'second' | 'third'>('first')
 
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input } : value)))
@@ -131,6 +133,19 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, link } : value)))
   }, [ link ])
+
+  const updateCrop = (newCrop: Crop) => {
+    if (first === 'first') {
+      setFirst('second')
+      return
+    }
+    if (first === 'second') {
+      setFirst('third')
+      return
+    }
+    setCrop(newCrop)
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, crop } : value)))
+  }
 
   const resizeImage = () => {
     if (imgRef.current) {
@@ -145,7 +160,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         cropHeight = cropWidth / aspectRatio
       }
 
-      setCrop({
+      updateCrop({
         unit: 'px',
         x: (imgWidth - cropWidth) / 2,
         y: (imgHeight - cropHeight) / 2,
@@ -156,7 +171,6 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   }
 
   useEffect(() => {
-    resizeImage()
     const observer = new ResizeObserver(resizeImage)
     if (imgRef.current) {
       observer.observe(imgRef.current)
@@ -397,21 +411,18 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         </ModalAction>
       </Dialog>
       <Container>
-        {
-          input &&
-            <ReactCrop
-              crop={crop}
-              onChange={(c) => setCrop(c)}
-              aspect={225 / 350}
-            >
-              <img
-                ref={imgRef}
-                src={input}
-                referrerPolicy="no-referrer"
-                onLoad={() => resizeImage()}
-              />
-            </ReactCrop>
-        }
+        <ReactCrop
+          crop={crop}
+          onChange={updateCrop}
+          aspect={225 / 350}
+        >
+          <img
+            ref={imgRef}
+            src={input}
+            referrerPolicy="no-referrer"
+            onLoad={() => resizeImage()}
+          />
+        </ReactCrop>
       </Container>
     </ImageProcessorContainer>
   )

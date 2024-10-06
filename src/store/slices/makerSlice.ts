@@ -3,13 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 
 /* Type imports ------------------------------------------------------------- */
 import type { PayloadAction } from '@reduxjs/toolkit'
+import type { Crop } from 'react-image-crop'
 import type { RootState } from 'store/store'
 
 export interface SavedMaker {
+  id: number;
+  name: string;
   imageBase64: string;
   link: string;
-  name: string;
-  id: number;
+  crop?: Crop;
 }
 
 export interface Maker {
