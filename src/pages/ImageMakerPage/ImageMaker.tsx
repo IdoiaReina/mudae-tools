@@ -98,22 +98,17 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [ openInput, setOpenInput ] = useState<boolean>(!savedMakers.some((val) => val.id === id))
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
+  const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
-
-  const loadImage = () => {
-    const image = new Image()
-    image.referrerPolicy = 'no-referrer'
-    image.src = input
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
-  }
 
   const onClickLoad = () => {
     setOpenInput(false)
-    loadImage()
+    setInput(newImage)
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: newImage } : value)))
   }
 
   useEffect(() => {
-    loadImage()
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
   }, [])
 
   const onCloseModal = () => {
@@ -226,9 +221,9 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             Image's URL (right-click on image + "copy image url address")
           </FormBoldTitle>
           <TextField
-            value={input}
+            value={newImage}
             placeholder={defaultUrl}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setNewImage(e.target.value)}
             size="small"
           />
         </DialogContent>
