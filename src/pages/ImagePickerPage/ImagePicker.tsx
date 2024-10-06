@@ -33,7 +33,7 @@ import {
 } from '@mui/material'
 import {
   Delete,
-  Edit, 
+  Edit,
 } from '@mui/icons-material'
 import {
   DndContext,
@@ -43,14 +43,14 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
-import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
+import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import SorterItem from './ImageItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
+import BoldTitle from 'components/BoldTitle/BoldTitle'
 
 /* Styled components -------------------------------------------------------- */
 const ContainerDiv = styled.div`
@@ -165,7 +165,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
 
   return (
     <ContainerDiv>
-      <LargeTitle>
+      <BoldTitle>
         {name}
         <TitleButtons>
           <Tooltip
@@ -186,7 +186,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
             onClick={onDeletePickerClick}
           />
         </TitleButtons>
-      </LargeTitle>
+      </BoldTitle>
       <Dialog
         open={openInput}
         onClose={onCloseModal}

@@ -34,10 +34,10 @@ import {
   ReactCrop,
   type Crop,
 } from 'react-image-crop'
-import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
-import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
+import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
+import BoldTitle from 'components/BoldTitle/BoldTitle'
 
 /* Styled components -------------------------------------------------------- */
 const ImageProcessorContainer = styled.div`
@@ -170,7 +170,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
 
   return (
     <ImageProcessorContainer>
-      <LargeTitle>
+      <BoldTitle>
         {name}
         <TitleButtons>
           <Tooltip
@@ -202,7 +202,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             onClick={onDeleteContainer}
           />
         </TitleButtons>
-      </LargeTitle>
+      </BoldTitle>
       <Dialog
         open={openInput}
         onClose={onCloseModal}
