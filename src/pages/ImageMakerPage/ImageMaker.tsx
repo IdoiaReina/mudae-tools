@@ -82,6 +82,23 @@ const Container = styled.div`
   }
 `
 
+const DialogContentContainer = styled(DialogContent)`
+  text-align: center;
+`
+
+const UploadContainer = styled.div`
+  border: 2px dashed ${(props) => props.theme.palette.secondary.main};
+  color: ${(props) => props.theme.palette.secondary.main};
+  font-weight: bold;
+  padding: 20px;
+  text-align: center;
+`
+
+const PreviewImage = styled.img`
+  max-width: 100%;
+  max-height: 300px;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface ImageMakerProps {
   id: number;
@@ -101,16 +118,20 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const tokens = useAppSelector(selectImgurToken)
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [ openInput, setOpenInput ] = useState<boolean>(savedMakers.find((val) => val.id === id)?.name === '')
-  const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
-  const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
+  const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
+  const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
+  const [ link, setLink ] = useState<string>(savedMakers.find((val) => val.id === id)?.link || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
   const [ isUploading, setIsUploading ] = useState<boolean>(false)
-  const [ link, setLink ] = useState<string>('')
 
   useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input, link: '' } : value)))
     setLink('')
   }, [ input ])
+
+  useEffect(() => {
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, link } : value)))
+  }, [ link ])
 
   const resizeImage = () => {
     if (imgRef.current) {
@@ -162,6 +183,45 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
     }
   }
 
+  const handlePaste = async (event: React.ClipboardEvent) => {
+    if (!event.clipboardData) return
+    const items = event.clipboardData.items
+
+    for (const item of items) {
+      if (item.kind === 'file' && item.type.startsWith('image/')) {
+        const file = item.getAsFile()
+        if (file) {
+          const reader = new FileReader()
+          reader.onloadend = () => {
+            if (reader.result) {
+              setNewImage(reader.result as string)
+            }
+          }
+          reader.readAsDataURL(file)
+        }
+        return
+      }
+    }
+
+    const url = event.clipboardData.getData('text/plain')
+    if (url) {
+      try {
+        const response = await fetch(`https://corsproxy.io/?${url}`)
+        const blob = await response.blob()
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          if (reader.result) {
+            setNewImage(reader.result as string)
+          }
+        }
+        reader.readAsDataURL(blob)
+      } catch(error) {
+        toast.error('Could not read image from url.')
+        console.error('Could not read image from url.', error)
+      }
+    }
+  }
+
   const onCopyToClipBoard = async (text?: string) => {
     const value = `$ai ${name}$${text || link}`
 
@@ -170,15 +230,13 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       const text = new Blob([ value ], { type: 'text/plain' })
       const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
       await navigator.clipboard.write([ data ])
+      toast.success('Copied to clipboard.')
     }
   }
 
   const downloadCroppedImage = (mode: 'upload' | 'download') => {
     const image = new Image()
-
-    image.crossOrigin = 'Anonymous'
-    image.referrerPolicy = 'no-referrer'
-    image.src = `https://corsproxy.io/?${input}`
+    image.src = input
 
     image.onload = () => {
       const canvas = document.createElement('canvas')
@@ -235,7 +293,6 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           const res = await response.json() as ImgurUploadResponse
           setLink(res.data.link)
           onCopyToClipBoard(res.data.link)
-          toast.success('Image was upload and command copied to your clipboard.')
         }).catch((error) => {
           console.error(error)
           toast.error('Error, could not upload image.')
@@ -293,7 +350,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         <ModalTitle>
           Add image
         </ModalTitle>
-        <DialogContent>
+        <DialogContentContainer>
           <FormBoldTitle>
             Character's name (as displayed in Mudae)
           </FormBoldTitle>
@@ -304,15 +361,25 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             size="small"
           />
           <FormBoldTitle>
-            Image's URL (right-click on image + "copy image's address")
+            Character's new image
           </FormBoldTitle>
-          <TextField
-            value={newImage}
-            placeholder="https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg"
-            onChange={(e) => setNewImage(e.target.value)}
-            size="small"
-          />
-        </DialogContent>
+          <UploadContainer onPaste={handlePaste}>
+            CTRL + V your image here
+          </UploadContainer>
+          {
+            newImage && (
+              <div>
+                <FormBoldTitle>
+                  Image Preview
+                </FormBoldTitle>
+                <PreviewImage
+                  src={newImage}
+                  alt="Uploaded"
+                />
+              </div>
+            )
+          }
+        </DialogContentContainer>
         <ModalAction>
           <LongButton
             onClick={onCloseModal}

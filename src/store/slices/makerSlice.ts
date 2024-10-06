@@ -6,7 +6,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from 'store/store'
 
 export interface SavedMaker {
-  imageUrl: string;
+  imageBase64: string;
+  link: string;
   name: string;
   id: number;
 }

@@ -43,13 +43,12 @@ interface ImageMakerPageProps {}
 
 const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
   const defaultName = process.env.NODE_ENV === 'production' ? '' : 'Madoka Kaname'
-  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
 
   useEffect(() => {
     if (!savedMakers.length) {
-      dispatch(setSavedMakers([ { name: defaultName, imageUrl: defaultUrl, id: 0 } ] ))
+      dispatch(setSavedMakers([ { name: defaultName, imageBase64: '', id: 0, link: '' } ] ))
     }
   }, [])
 
@@ -58,7 +57,7 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
   }
 
   const onAddNewWaifu = () => {
-    dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: defaultName, imageUrl: defaultUrl } ] ))
+    dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: defaultName, imageBase64: '', link: '' } ] ))
   }
 
   const onChangeName = (value: string, id: number) => {
