@@ -96,7 +96,6 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   name,
   onDeleteContainer,
 }) => {
-  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
   const tokens = useAppSelector(selectImgurToken)
@@ -110,6 +109,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
 
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
+    setLink('')
   }, [ input ])
 
   const resizeImage = () => {
@@ -308,7 +308,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           </FormBoldTitle>
           <TextField
             value={newImage}
-            placeholder={defaultUrl}
+            placeholder="https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg"
             onChange={(e) => setNewImage(e.target.value)}
             size="small"
           />
@@ -341,6 +341,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
                 ref={imgRef}
                 src={input}
                 referrerPolicy="no-referrer"
+                onLoad={() => resizeImage()}
               />
             </ReactCrop>
         }
