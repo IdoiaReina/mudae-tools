@@ -27,6 +27,7 @@ import { Logout } from '@mui/icons-material'
 import CustomIconButtonContainer from 'components/IconButtons/CustomIconButton/CustomIconButtonContainer'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import { ReactComponent as ImgurLogo } from './ImgurLogo.svg'
+import type { ImgurImagesResponse } from 'types/Imgur'
 
 /* Type declarations -------------------------------------------------------- */
 interface ImgurWindow extends Window {
@@ -104,10 +105,9 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
     if (imgurTokens.accessToken) {
       fetch(`https://api.imgur.com/3/account/me/images`, { headers: { 'Authorization': `Bearer ${imgurTokens.accessToken}` }})
         .then(async (data) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const res = await data.json()
+          const res = await data.json() as ImgurImagesResponse
 
-          if ('error' in res) {
+          if ('error' in res || !res.success) {
             console.error(res)
             refreshToken()
           } else if (res) {

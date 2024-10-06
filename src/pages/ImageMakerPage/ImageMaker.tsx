@@ -25,6 +25,8 @@ import {
   TextField,
 } from '@mui/material'
 import {
+  CloudUpload,
+  ContentCopy,
   Delete,
   Download,
   Edit,
@@ -37,6 +39,9 @@ import LongButton from 'components/LongButton/LongButton'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
 import BoldTitle from 'components/BoldTitle/BoldTitle'
+import { selectImgurToken } from 'store/slices/imgurSlice'
+import { toast } from 'react-toastify'
+import type { ImgurUploadResponse } from 'types/Imgur'
 
 /* Styled components -------------------------------------------------------- */
 const ImageProcessorContainer = styled.div`
@@ -94,11 +99,14 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
+  const tokens = useAppSelector(selectImgurToken)
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [ openInput, setOpenInput ] = useState<boolean>(!savedMakers.some((val) => val.id === id))
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
+  const [ isUploading, setIsUploading ] = useState<boolean>(false)
+  const [ link, setLink ] = useState<string>('')
 
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
@@ -154,7 +162,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
     }
   }
 
-  const downloadCroppedImage = () => {
+  const downloadCroppedImage = (mode: 'upload' | 'download') => {
     const image = new Image()
     image.crossOrigin = 'anonymous'
     image.referrerPolicy = 'no-referrer'
@@ -185,18 +193,52 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         offscreen.height,
       )
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = `${name}.png`
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
-          URL.revokeObjectURL(url)
-        }
-      }, 'image/png')
+      if (mode === 'download') {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `${name}.png`
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            URL.revokeObjectURL(url)
+          }
+        }, 'image/png')
+      } else {
+        const data = canvas.toDataURL('image/png').split(';base64,')[1]
+        const formData = new FormData()
+        formData.append('image', data)
+        formData.append('title', name)
+        formData.append('type', 'base64')
+        formData.append('description', 'Imported with Mudae Tools')
+
+        setIsUploading(true)
+        fetch(`https://api.imgur.com/3/image`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${tokens.accessToken}` },
+          body: formData,
+        }).then(async (response) => {
+          const res = await response.json() as ImgurUploadResponse
+          setLink(res.data.link)
+          toast.success('Image was upload and command copied to your clipboard.')
+        }).catch((error) => {
+          console.error(error)
+          toast.error('Error, could not upload image.')
+        }).finally(() => setIsUploading(false))
+      }
+    }
+  }
+
+  const onCopyToClipBoard = async () => {
+    const value = `$ai ${name}$${link}`
+
+    if (typeof ClipboardItem !== 'undefined') {
+      const html = new Blob([ value ], { type: 'text/html' })
+      const text = new Blob([ value ], { type: 'text/plain' })
+      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
+      await navigator.clipboard.write([ data ])
     }
   }
 
@@ -212,10 +254,24 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             label="Input image"
           />
           <CustomIconButton
-            onClick={downloadCroppedImage}
+            onClick={() => downloadCroppedImage('download')}
             variant="contained"
             Icon={Download}
             label="Download image"
+          />
+          <CustomIconButton
+            onClick={() => downloadCroppedImage('upload')}
+            variant="contained"
+            Icon={CloudUpload}
+            label="Upload image"
+            disabled={isUploading}
+          />
+          <CustomIconButton
+            onClick={onCopyToClipBoard}
+            variant="contained"
+            Icon={ContentCopy}
+            label="Copy last generated command"
+            disabled={isUploading || !link}
           />
           <CustomIconButton
             Icon={Delete}
