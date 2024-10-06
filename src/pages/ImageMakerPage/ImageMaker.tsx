@@ -157,8 +157,23 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
 
   const onCloseModal = () => {
     setOpenInput(false)
-    if (!name && !input) {
+    if (!name && !newImage) {
       onDeleteContainer()
+    }
+  }
+
+  const onCopyToClipBoard = async () => {
+    console.log('heyy')
+    const value = `$ai ${name}$${link}`
+
+    if (typeof ClipboardItem !== 'undefined') {
+      console.log('yo')
+      const html = new Blob([ value ], { type: 'text/html' })
+      const text = new Blob([ value ], { type: 'text/plain' })
+      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
+
+      console.log(data)
+      await navigator.clipboard.write([ data ])
     }
   }
 
@@ -222,23 +237,13 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         }).then(async (response) => {
           const res = await response.json() as ImgurUploadResponse
           setLink(res.data.link)
+          onCopyToClipBoard()
           toast.success('Image was upload and command copied to your clipboard.')
         }).catch((error) => {
           console.error(error)
           toast.error('Error, could not upload image.')
         }).finally(() => setIsUploading(false))
       }
-    }
-  }
-
-  const onCopyToClipBoard = async () => {
-    const value = `$ai ${name}$${link}`
-
-    if (typeof ClipboardItem !== 'undefined') {
-      const html = new Blob([ value ], { type: 'text/html' })
-      const text = new Blob([ value ], { type: 'text/plain' })
-      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
-      await navigator.clipboard.write([ data ])
     }
   }
 
@@ -321,7 +326,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           <LongButton
             onClick={onClickLoad}
             variant="contained"
-            disabled={!input || !name}
+            disabled={!newImage || !name}
           >
             Load image
           </LongButton>
