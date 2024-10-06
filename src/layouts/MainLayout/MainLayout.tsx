@@ -19,6 +19,7 @@ import PageContainer from 'layouts/PageContainer/PageContainer'
 import MainLogo from 'components/MainLogo/MainLogo'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import MainLayoutNavTabs from './MainLayoutComponents/MainLayoutNavTabs'
+import ImgurButton from 'components/ImgurButton/ImgurButton'
 
 /* Styled components -------------------------------------------------------- */
 const DesktopHeader = styled.div`
@@ -190,6 +191,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
             />
             <HeaderTitleContainer>
               <SearchBar>
+                <ImgurButton />
                 <CustomIconButton
                   Icon={Brightness4Rounded}
                   variant="contained"
@@ -206,6 +208,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
               Mudae Tools
             </HeaderTitleButtonContainer>
             <HeaderTitleContainer>
+              <ImgurButton />
               <CustomIconButton
                 Icon={Brightness4Rounded}
                 variant="contained"

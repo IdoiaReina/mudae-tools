@@ -23,7 +23,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Tooltip,
 } from '@mui/material'
 import {
   Delete,
@@ -206,33 +205,24 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       <BoldTitle>
         {name}
         <TitleButtons>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Input image"
-          >
-            <CustomIconButton
-              onClick={() => setOpenInput(true)}
-              variant="contained"
-              Icon={Edit}
-            />
-          </Tooltip>
-          <Tooltip
-            arrow
-            placement="top"
-            title=" Download image"
-          >
-            <CustomIconButton
-              onClick={downloadCroppedImage}
-              variant="contained"
-              Icon={Download}
-            />
-          </Tooltip>
+          <CustomIconButton
+            onClick={() => setOpenInput(true)}
+            variant="contained"
+            Icon={Edit}
+            label="Input image"
+          />
+          <CustomIconButton
+            onClick={downloadCroppedImage}
+            variant="contained"
+            Icon={Download}
+            label="Download image"
+          />
           <CustomIconButton
             Icon={Delete}
             variant="outlined"
             color="error"
             onClick={onDeleteContainer}
+            label="Remove image"
           />
         </TitleButtons>
       </BoldTitle>
