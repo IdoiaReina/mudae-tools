@@ -55,10 +55,11 @@ interface ImgurButtonProps {}
 const ImgurButton: React.FC<ImgurButtonProps> = () => {
   const dispatch = useAppDispatch()
   const imgurTokens = useAppSelector(selectImgurToken)
-
   const [ connexionWindow, setConnexionWindow ] = useState<ImgurWindow | null>(null)
   const [ openMenu, setOpenMenu ] = useState<boolean>(false)
   const [ anchorEl, setAnchorEl ] = React.useState<HTMLButtonElement | null>(null)
+  const clientId = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_IMGUR_CLIENT_ID_PROD || '' : process.env.REACT_APP_IMGUR_CLIENT_ID_DEV || ''
+  const clientSecret = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_IMGUR_CLIENT_SECRET_PROD || '' : process.env.REACT_APP_IMGUR_CLIENT_SECRET_DEV || ''
 
   const resetAuth = () => {
     dispatch(setImgurTokens({ accessToken: '', refreshToken: '' }))
@@ -73,8 +74,8 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
     const bodyToEncode: {[x: string]: string} = {
       'grant_type': 'refresh_token',
       'refresh_token': imgurTokens.refreshToken,
-      'client_id': process.env.REACT_APP_IMGUR_CLIENT_ID || '',
-      'client_secret': process.env.REACT_APP_IMGUR_CLIENT_SECRET || '',
+      'client_id': clientId,
+      'client_secret': clientSecret,
     }
 
     const formBody: string[] = []
@@ -145,7 +146,7 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
       setAnchorEl(event.currentTarget)
       setOpenMenu(!openMenu)
     } else {
-      setConnexionWindow(window.open(`https://api.imgur.com/oauth2/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}&response_type=token`,
+      setConnexionWindow(window.open(`https://api.imgur.com/oauth2/authorize?client_id=${clientId}&response_type=token`,
         'sub',
         'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=800',
       ))
