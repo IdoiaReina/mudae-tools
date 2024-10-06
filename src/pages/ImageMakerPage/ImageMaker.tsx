@@ -218,7 +218,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             size="small"
           />
           <FormBoldTitle>
-            Image's URL (right-click on image + "copy image url address")
+            Image's URL (right-click on image + "copy image's address")
           </FormBoldTitle>
           <TextField
             value={newImage}
@@ -244,18 +244,20 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         </ModalAction>
       </Dialog>
       <Container>
-        <ReactCrop
-          crop={crop}
-          onChange={(c) => setCrop(c)}
-          aspect={225/350}
-          // style={{ height: '100%', width: '100%', objectFit: 'contain' }}
-        >
-          <img
-            ref={imgRef}
-            src={input}
-            referrerPolicy="no-referrer"
-          />
-        </ReactCrop>
+        {
+          input &&
+            <ReactCrop
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              aspect={225 / 350}
+            >
+              <img
+                ref={imgRef}
+                src={input}
+                referrerPolicy="no-referrer"
+              />
+            </ReactCrop>
+        }
       </Container>
     </ImageProcessorContainer>
   )
