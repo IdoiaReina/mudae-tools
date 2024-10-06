@@ -125,7 +125,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const [ link, setLink ] = useState<string>(savedMakers.find((val) => val.id === id)?.link || '')
   const [ crop, setCrop ] = useState<Crop>(savedMakers.find((val) => val.id === id)?.crop as Crop || defaultCrop)
   const [ isUploading, setIsUploading ] = useState<boolean>(false)
-  const [ first, setFirst ] = useState<'first' | 'second' | 'third'>('first')
+  const [ first, setFirst ] = useState<'first' | 'second' | 'third'>(savedMakers.find((val) => val.id === id)?.crop ? 'first' : 'third')
 
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input } : value)))
