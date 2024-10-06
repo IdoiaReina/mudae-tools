@@ -25,6 +25,7 @@ import App from './App/App'
 
 /* Styling imports ------------------------------------- */
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-image-crop/dist/ReactCrop.css'
 import './theme/index.css'
 
 /* React startup --------------------------------------- */

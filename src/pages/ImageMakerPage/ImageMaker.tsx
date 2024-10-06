@@ -7,33 +7,31 @@ import React, {
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedMakers,
+  setSavedMakers,
+} from 'store/slices/makerSlice'
 
 /* Component imports -------------------------------------------------------- */
-import FilerobotImageEditor, {
-  TABS,
-  TOOLS,
-} from 'react-filerobot-image-editor'
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
 } from '@mui/material'
+import { Delete } from '@mui/icons-material'
 import {
-  useAppDispatch,
-  useAppSelector,
-} from 'store/hooks'
-import { selectSavedPickers } from 'store/slices/pickerSlice'
-import {
-  selectSavedMakers,
-  setSavedMakers,
-} from 'store/slices/makerSlice'
+  ReactCrop,
+  type Crop,
+} from 'react-image-crop'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import LongButton from 'components/LongButton/LongButton'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
-import { Delete } from '@mui/icons-material'
 import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 
 /* Styled components -------------------------------------------------------- */
@@ -80,27 +78,18 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   name,
   onDeleteContainer,
 }) => {
-  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.wikia.nocookie.net/madoka-magica/images/5/51/MK_GOD.jpg/revision/latest?cb=20200916211931&path-prefix=fr'
+  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
+  const imgRef = useRef<HTMLImageElement | null>(null)
   const [ openInput, setOpenInput ] = useState<boolean>((savedMakers.some((val) => val.id === id)))
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
-  const [ source, setSource ] = useState<string | HTMLImageElement>(defaultUrl)
-  const ref = useRef()
-
-  const downloadBase64File = (base64Data: string, fileName: string): void => {
-    console.log('hey', fileName)
-    const downloadLink = document.createElement('a')
-    downloadLink.href = base64Data
-    downloadLink.download = fileName
-    downloadLink.click()
-  }
+  const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
 
   const loadImage = () => {
     const image = new Image()
     image.referrerPolicy = 'no-referrer'
     image.src = input
-    setSource(image)
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
   }
 
@@ -119,15 +108,49 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       onDeleteContainer()
   }
 
-  const onDownloadClick = () => {
-    if (typeof ref.current === 'function') {
-      const fnOptionsIfNeededFoundInDocs = {}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const imgData = ref.current(fnOptionsIfNeededFoundInDocs)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-      downloadBase64File(imgData.imageData.imageBase64 || '', `${name}.png`)
+  const downloadCroppedImage = () => {
+    const image = new Image()
+    image.crossOrigin = 'anonymous'
+    image.referrerPolicy = 'no-referrer'
+    image.src = input
+
+    image.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      if (!imgRef.current || !ctx) return
+
+      const scaleX = image.naturalWidth / imgRef.current.width
+      const scaleY = image.naturalHeight / imgRef.current.height
+      const offscreen = new OffscreenCanvas(crop.width * scaleX, crop.height * scaleY)
+
+      canvas.width = offscreen.width
+      canvas.height = offscreen.height
+
+      ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        offscreen.width,
+        offscreen.height,
+        0,
+        0,
+        offscreen.width,
+        offscreen.height,
+      )
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `${name}.png`
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
+          URL.revokeObjectURL(url)
+        }
+      }, 'image/png')
     }
   }
 
@@ -143,7 +166,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             Input image
           </LongButton>
           <LongButton
-            onClick={onDownloadClick}
+            onClick={downloadCroppedImage}
             variant="contained"
           >
             Download Image
@@ -201,20 +224,17 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           </LongButton>
         </ModalAction>
       </Dialog>
-      <FilerobotImageEditor
-        getCurrentImgDataFnRef={ref}
-        previewPixelRatio={0}
-        savingPixelRatio={0}
-        source={source}
-        onSave={(editedImageObject): void => downloadBase64File(editedImageObject.imageBase64 || '', editedImageObject.fullName || editedImageObject.name)}
-        Crop={{ noPresets: true, ratio: 225 / 350, autoResize: true }}
-        tabsIds={[ TABS.ADJUST ]}
-        defaultTabId={TABS.ADJUST}
-        defaultToolId={TOOLS.CROP}
-        Rotate={{ componentType: 'buttons', angle: 90 }}
-        resetOnImageSourceChange
-        avoidChangesNotSavedAlertOnLeave
-      />
+      <ReactCrop
+        crop={crop}
+        onChange={(c) => setCrop(c)}
+        aspect={225/350}
+      >
+        <img
+          ref={imgRef}
+          src={input}
+          referrerPolicy="no-referrer"
+        />
+      </ReactCrop>
     </ImageProcessorContainer>
   )
 

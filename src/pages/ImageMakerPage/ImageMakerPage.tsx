@@ -42,7 +42,7 @@ interface ImageMakerPageProps {}
 
 const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
   const defaultName = process.env.NODE_ENV === 'production' ? '' : 'Madoka Kaname'
-  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.wikia.nocookie.net/madoka-magica/images/5/51/MK_GOD.jpg/revision/latest?cb=20200916211931&path-prefix=fr'
+  const defaultUrl = process.env.NODE_ENV === 'production' ? '' : 'https://static.zerochan.net/Mahou.Shoujo.Madoka%E2%98%86Magica.full.3522716.jpg'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
 
