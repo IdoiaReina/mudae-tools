@@ -101,20 +101,21 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
 
+  useEffect(() => {
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
+  }, [])
+
   const onClickLoad = () => {
     setOpenInput(false)
     setInput(newImage)
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: newImage } : value)))
   }
 
-  useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
-  }, [])
-
   const onCloseModal = () => {
     setOpenInput(false)
-    if (!name && !input)
+    if (!name && !input) {
       onDeleteContainer()
+    }
   }
 
   const downloadCroppedImage = () => {
