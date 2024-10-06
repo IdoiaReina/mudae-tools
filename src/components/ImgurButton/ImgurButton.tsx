@@ -17,7 +17,15 @@ import {
 } from 'store/slices/imgurSlice'
 
 /* Components imports ------------------------------------------------------- */
+import {
+  ClickAwayListener,
+  Fade,
+  Paper,
+  Popper,
+} from '@mui/material'
+import { Logout } from '@mui/icons-material'
 import CustomIconButtonContainer from 'components/IconButtons/CustomIconButton/CustomIconButtonContainer'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import { ReactComponent as ImgurLogo } from './ImgurLogo.svg'
 
 /* Type declarations -------------------------------------------------------- */
@@ -35,6 +43,11 @@ const ImgurButtonContainer = styled(CustomIconButtonContainer)<ImgurButtonContai
   filter: grayscale(${(props) => props.connected ? 0 : 1});
 `
 
+const PaperContainer = styled(Paper)`
+  background-color: ${(props) => props.theme.colors.main};
+  padding: 10px;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface ImgurButtonProps {}
 
@@ -46,9 +59,13 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
   const [ openMenu, setOpenMenu ] = useState<boolean>(false)
   const [ anchorEl, setAnchorEl ] = React.useState<HTMLButtonElement | null>(null)
 
+  const resetAuth = () => {
+    dispatch(setImgurTokens({ accessToken: '', refreshToken: '' }))
+  }
+
   const refreshToken = () => {
     if (!imgurTokens.refreshToken) {
-      dispatch(setImgurTokens({ accessToken: '', refreshToken: '' }))
+      resetAuth()
       return
     }
 
@@ -79,7 +96,7 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
       dispatch(setImgurTokens({ accessToken: res.access_token, refreshToken: res.refresh_token }))
     }).catch((error) => {
       console.error(error)
-      dispatch(setImgurTokens({ accessToken: '', refreshToken: '' }))
+      resetAuth()
     })
   }
 
@@ -136,12 +153,41 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
   }
 
   return (
-    <ImgurButtonContainer
-      onClick={onClick}
-      connected={imgurTokens.accessToken}
-    >
-      <ImgurLogo />
-    </ImgurButtonContainer>
+    <ClickAwayListener onClickAway={() => setOpenMenu(false)}>
+      <div>
+        <ImgurButtonContainer
+          onClick={onClick}
+          connected={imgurTokens.accessToken}
+        >
+          <ImgurLogo />
+        </ImgurButtonContainer>
+        <Popper
+          open={openMenu}
+          anchorEl={anchorEl}
+          placement="bottom-end"
+          transition
+        >
+          {
+            ({ TransitionProps }) => (
+              <Fade
+                {...TransitionProps}
+                timeout={350}
+              >
+                <PaperContainer>
+                  <CustomIconButton
+                    Icon={Logout}
+                    onClick={resetAuth}
+                    variant="contained"
+                    color="error"
+                    label="Logout of Imgur"
+                  />
+                </PaperContainer>
+              </Fade>
+            )
+          }
+        </Popper>
+      </div>
+    </ClickAwayListener>
   )
 }
 
