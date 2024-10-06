@@ -159,8 +159,9 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
 
   const onCloseModal = () => {
     setOpenInput(false)
-    if (!name && !images.length)
+    if (!name && !images.length) {
       onDeletePickerClick()
+    }
   }
 
   return (
