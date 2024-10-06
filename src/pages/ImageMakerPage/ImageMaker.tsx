@@ -23,8 +23,13 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Tooltip,
 } from '@mui/material'
-import { Delete } from '@mui/icons-material'
+import {
+  Delete,
+  Download,
+  Edit,
+} from '@mui/icons-material'
 import {
   ReactCrop,
   type Crop,
@@ -168,18 +173,28 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       <LargeTitle>
         {name}
         <TitleButtons>
-          <LongButton
-            onClick={() => setOpenInput(true)}
-            variant="contained"
+          <Tooltip
+            arrow
+            placement="top"
+            title="Input image"
           >
-            Input image
-          </LongButton>
-          <LongButton
-            onClick={downloadCroppedImage}
-            variant="contained"
+            <CustomIconButton
+              onClick={() => setOpenInput(true)}
+              variant="contained"
+              Icon={Edit}
+            />
+          </Tooltip>
+          <Tooltip
+            arrow
+            placement="top"
+            title=" Download image"
           >
-            Download Image
-          </LongButton>
+            <CustomIconButton
+              onClick={downloadCroppedImage}
+              variant="contained"
+              Icon={Download}
+            />
+          </Tooltip>
           <CustomIconButton
             Icon={Delete}
             variant="outlined"
@@ -199,7 +214,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         </ModalTitle>
         <DialogContent>
           <FormBoldTitle>
-            Waifu's name (as displayed in Mudae)
+            Character's name (as displayed in Mudae)
           </FormBoldTitle>
           <TextField
             value={name}
@@ -229,7 +244,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             variant="contained"
             disabled={!input || !name}
           >
-            Load Image
+            Load image
           </LongButton>
         </ModalAction>
       </Dialog>

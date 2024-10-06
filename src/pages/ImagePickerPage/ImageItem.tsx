@@ -3,12 +3,14 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
+/* Component imports -------------------------------------------------------- */
 import {
   ContentCopy,
   Delete,
 } from '@mui/icons-material'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 
 /* Type imports ------------------------------------------------------------- */

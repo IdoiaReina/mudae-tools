@@ -29,8 +29,13 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Tooltip,
 } from '@mui/material'
-import { ContentCopy } from '@mui/icons-material'
+import {
+  ContentCopy,
+  Done,
+  Edit,
+} from '@mui/icons-material'
 import {
   DndContext,
   closestCenter,
@@ -180,18 +185,28 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           Harem Sorter
         </Title>
         <TitleButtons>
-          <LongButton
-            onClick={() => setOpenInput(true)}
-            variant="contained"
+          <Tooltip
+            arrow
+            placement="top"
+            title="Input harem"
           >
-            Input Harem
-          </LongButton>
-          <LongButton
-            onClick={() => {setOpenOutput(true); onOutputClick()}}
-            variant="contained"
+            <CustomIconButton
+              onClick={() => setOpenInput(true)}
+              variant="contained"
+              Icon={Edit}
+            />
+          </Tooltip>
+          <Tooltip
+            arrow
+            placement="top"
+            title="Output Mudae's commands"
           >
-            Output Mudae commands
-          </LongButton>
+            <CustomIconButton
+              onClick={() => {setOpenOutput(true); onOutputClick()}}
+              variant="contained"
+              Icon={Done}
+            />
+          </Tooltip>
         </TitleButtons>
       </LargeTitle>
       <Dialog

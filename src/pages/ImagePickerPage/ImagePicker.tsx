@@ -29,8 +29,12 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Tooltip,
 } from '@mui/material'
-import { Delete } from '@mui/icons-material'
+import {
+  Delete,
+  Edit, 
+} from '@mui/icons-material'
 import {
   DndContext,
   closestCenter,
@@ -164,12 +168,17 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
       <LargeTitle>
         {name}
         <TitleButtons>
-          <LongButton
-            onClick={() => setOpenInput(true)}
-            variant="contained"
+          <Tooltip
+            arrow
+            placement="top"
+            title="Input image list"
           >
-            Input image list
-          </LongButton>
+            <CustomIconButton
+              onClick={() => setOpenInput(true)}
+              variant="contained"
+              Icon={Edit}
+            />
+          </Tooltip>
           <CustomIconButton
             Icon={Delete}
             variant="outlined"
@@ -185,11 +194,11 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
         fullWidth
       >
         <ModalTitle>
-          Paste text from Mudae command ($imi-s WaifuName)
+          Paste text from Mudae command ($imi-s CharacterName)
         </ModalTitle>
         <DialogContent>
           <FormBoldTitle>
-            Waifu's name (as displayed in Mudae)
+            Character's name (as displayed in Mudae)
           </FormBoldTitle>
           <TextField
             value={name}
@@ -198,7 +207,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
             size="small"
           />
           <FormBoldTitle>
-            Waifu's images ($imi-s WaifuName)
+            Character's images ($imi-s CharacterName)
           </FormBoldTitle>
           <TextField
             value={input}
@@ -221,7 +230,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
             variant="contained"
             disabled={!input || !name}
           >
-            Display waifu's images
+            Display character's images
           </LongButton>
         </ModalAction>
       </Dialog>
