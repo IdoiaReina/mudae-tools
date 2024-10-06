@@ -141,7 +141,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       }
       observer.disconnect()
     }
-  }, [ ])
+  }, [])
 
   const onClickLoad = () => {
     setOpenInput(false)
