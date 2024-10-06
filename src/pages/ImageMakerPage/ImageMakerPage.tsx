@@ -53,15 +53,11 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
   }, [])
 
   const onDeleteContainer = (id: number) => {
-    dispatch(setSavedMakers(savedMakers.filter((saved) => saved.id !== id) ))
+    dispatch(setSavedMakers(savedMakers.filter((saved) => saved.id !== id)))
   }
 
   const onAddNewWaifu = () => {
     dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: defaultName, imageBase64: '', link: '' } ] ))
-  }
-
-  const onChangeName = (value: string, id: number) => {
-    dispatch(setSavedMakers(savedMakers.map((saved) => saved.id === id ? { ...saved, name: value } : saved) ))
   }
 
   return (
@@ -86,8 +82,6 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
               key={maker.id}
               id={maker.id}
               onDeleteContainer={() => onDeleteContainer(maker.id)}
-              name={maker.name}
-              onChangeName={(value) => onChangeName(value, maker.id)}
             />
           ))
         }

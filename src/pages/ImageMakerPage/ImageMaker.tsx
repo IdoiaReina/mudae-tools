@@ -103,14 +103,10 @@ const PreviewImage = styled.img`
 interface ImageMakerProps {
   id: number;
   onDeleteContainer: () => void;
-  name: string;
-  onChangeName: (value: string) => void;
 }
 
 const ImageMaker: React.FC<ImageMakerProps> = ({
   id,
-  onChangeName,
-  name,
   onDeleteContainer,
 }) => {
   const clientId = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_IMGUR_CLIENT_ID_PROD || '' : process.env.REACT_APP_IMGUR_CLIENT_ID_DEV || ''
@@ -120,6 +116,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const tokens = useAppSelector(selectImgurToken)
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [ openInput, setOpenInput ] = useState<boolean>(savedMakers.find((val) => val.id === id)?.name === '')
+  const [ name, setName ] = useState<string>(savedMakers.find((val) => val.id === id)?.name || '')
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
   const [ link, setLink ] = useState<string>(savedMakers.find((val) => val.id === id)?.link || '')
@@ -134,6 +131,10 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, link } : value)))
   }, [ link ])
+
+  useEffect(() => {
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, name } : value)))
+  }, [ name ])
 
   const updateCrop = (newCrop: Crop) => {
     if (first === 'first') {
@@ -372,7 +373,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           <TextField
             value={name}
             placeholder="Madoka Kaname"
-            onChange={(e) => onChangeName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             size="small"
           />
           <FormBoldTitle>
