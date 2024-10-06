@@ -113,6 +113,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   name,
   onDeleteContainer,
 }) => {
+  const clientId = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_IMGUR_CLIENT_ID_PROD || '' : process.env.REACT_APP_IMGUR_CLIENT_ID_DEV || ''
   const defaultCrop = { unit: 'px', width: 225, height: 350, x: 0, y: 0 }
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
@@ -301,7 +302,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         setIsUploading(true)
         fetch(`https://api.imgur.com/3/image`, {
           method: 'POST',
-          headers: { 'Authorization': `Bearer ${tokens.accessToken}` },
+          headers: { 'Authorization': tokens.accessToken ? `Bearer ${tokens.accessToken}` : `Client-ID ${clientId}` },
           body: formData,
         }).then(async (response) => {
           const res = await response.json() as ImgurUploadResponse
