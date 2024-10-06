@@ -55,8 +55,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Add style to output
 - [x] Save state
 - [x] Verify package.json
+- [x] Upload on github pages
+- [x] Image maker
 - [ ] Scroll diff on picker
 - [ ] Able to change colors + save in localstorage
-- [ ] Upload on github pages
 - [ ] Take a screenshot of harem
-- [ ] Image maker
+- [ ] Verify image before load in maker
