@@ -125,8 +125,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const [ isUploading, setIsUploading ] = useState<boolean>(false)
 
   useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input, link: '' } : value)))
-    setLink('')
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input } : value)))
   }, [ input ])
 
   useEffect(() => {
@@ -174,6 +173,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const onClickLoad = () => {
     setOpenInput(false)
     setInput(newImage)
+    setLink('')
   }
 
   const onCloseModal = () => {
@@ -329,7 +329,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             onClick={() => onCopyToClipBoard()}
             variant="contained"
             Icon={ContentCopy}
-            label="Copy last generated command"
+            label="Copy command"
             disabled={isUploading || !link}
           />
           <CustomIconButton

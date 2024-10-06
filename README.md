@@ -60,5 +60,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [ ] Scroll diff on picker
 - [ ] Able to change colors + save in localstorage
 - [ ] Take a screenshot of harem
-- [ ] Verify image before load in maker
+- [x] Verify image before load in maker
 - [ ] Log out of Imgur
+- [ ] Convert images to png
