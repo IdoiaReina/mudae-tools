@@ -42,13 +42,12 @@ const Container = styled.div`
 interface ImageMakerPageProps {}
 
 const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
-  const defaultName = process.env.NODE_ENV === 'production' ? '' : 'Madoka Kaname'
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
 
   useEffect(() => {
     if (!savedMakers.length) {
-      dispatch(setSavedMakers([ { name: defaultName, imageBase64: '', id: 0, link: '' } ] ))
+      dispatch(setSavedMakers([ { name: '', imageBase64: '', id: 0, link: '' } ] ))
     }
   }, [])
 
@@ -57,7 +56,7 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
   }
 
   const onAddNewWaifu = () => {
-    dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: defaultName, imageBase64: '', link: '' } ] ))
+    dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: '', imageBase64: '', link: '' } ] ))
   }
 
   return (

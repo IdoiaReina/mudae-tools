@@ -124,18 +124,6 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const [ isUploading, setIsUploading ] = useState<boolean>(false)
   const [ first, setFirst ] = useState<'first' | 'second' | 'third'>(savedMakers.find((val) => val.id === id)?.crop ? 'first' : 'third')
 
-  useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input } : value)))
-  }, [ input ])
-
-  useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, link } : value)))
-  }, [ link ])
-
-  useEffect(() => {
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, name } : value)))
-  }, [ name ])
-
   const updateCrop = (newCrop: Crop) => {
     if (first === 'first') {
       setFirst('second')
@@ -173,23 +161,26 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   }
 
   useEffect(() => {
-    const observer = new ResizeObserver(resizeImage)
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
-    }
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageBase64: input } : value)))
+  }, [ input ])
 
-    return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current)
-      }
-      observer.disconnect()
-    }
-  }, [])
+  useEffect(() => {
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, link } : value)))
+  }, [ link ])
+
+  useEffect(() => {
+    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, name } : value)))
+  }, [ name ])
+
+  useEffect(() => {
+    resizeImage()
+  }, [ savedMakers.length ])
 
   const onClickLoad = () => {
     setOpenInput(false)
     setInput(newImage)
     setLink('')
+    resizeImage()
   }
 
   const onCloseModal = () => {
