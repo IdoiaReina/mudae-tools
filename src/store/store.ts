@@ -14,6 +14,7 @@ import themeSlice from './slices/themeSlice'
 import sorterSlice from './slices/sorterSlice'
 import pickerSlice from './slices/pickerSlice'
 import makerSlice from './slices/makerSlice'
+import imgurSlice from './slices/imgurSlice'
 
 /* Store configuration ------------------------------------------------------ */
 const appReducer = RTK.combineReducers({
@@ -21,6 +22,7 @@ const appReducer = RTK.combineReducers({
   sorter: sorterSlice,
   picker: pickerSlice,
   maker: makerSlice,
+  imgur: imgurSlice,
 })
 
 const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: RTK.PayloadAction) => {
@@ -34,7 +36,7 @@ const rootReducer = (state: ReturnType<typeof appReducer> | undefined, action: R
 const persistConfig = {
   key: 'mudae_tools',
   storage: storage,
-  whitelist: [ 'auth', 'theme' ], // which reducer want to store
+  whitelist: [ 'auth', 'theme', 'imgur' ], // which reducer want to store
 }
 
 const pReducer = persistReducer(persistConfig, rootReducer)

@@ -16,6 +16,7 @@ import SorterPage from 'pages/SorterPage/SorterPage'
 import NotFoundPage from 'pages/NotFoundPage/NotFoundPage'
 import ImagePickerPage from 'pages/ImagePickerPage/ImagePickerPage'
 import ImageMakerPage from 'pages/ImageMakerPage/ImageMakerPage'
+import ImgurLoginPage from 'pages/ImgurLoginPage/ImgurLoginPage'
 
 /* Component declaration ---------------------------------------------------- */
 interface AuthRouterProps {}
@@ -47,6 +48,10 @@ const Router: React.FC<AuthRouterProps> = () => {
         <Route
           path="custom-image-maker"
           element={<ImageMakerPage />}
+        />
+        <Route
+          path="imgur-auth/:auth"
+          element={<ImgurLoginPage />}
         />
         <Route
           path="*"
