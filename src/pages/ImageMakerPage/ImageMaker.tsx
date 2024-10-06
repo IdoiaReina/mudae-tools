@@ -101,7 +101,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const savedMakers = useAppSelector(selectSavedMakers)
   const tokens = useAppSelector(selectImgurToken)
   const imgRef = useRef<HTMLImageElement | null>(null)
-  const [ openInput, setOpenInput ] = useState<boolean>(!savedMakers.some((val) => val.id === id))
+  const [ openInput, setOpenInput ] = useState<boolean>(savedMakers.find((val) => val.id === id)?.name === '')
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
@@ -162,26 +162,23 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
     }
   }
 
-  const onCopyToClipBoard = async () => {
-    console.log('heyy')
-    const value = `$ai ${name}$${link}`
+  const onCopyToClipBoard = async (text?: string) => {
+    const value = `$ai ${name}$${text || link}`
 
     if (typeof ClipboardItem !== 'undefined') {
-      console.log('yo')
       const html = new Blob([ value ], { type: 'text/html' })
       const text = new Blob([ value ], { type: 'text/plain' })
       const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
-
-      console.log(data)
       await navigator.clipboard.write([ data ])
     }
   }
 
   const downloadCroppedImage = (mode: 'upload' | 'download') => {
     const image = new Image()
-    image.crossOrigin = 'anonymous'
+
+    image.crossOrigin = 'Anonymous'
     image.referrerPolicy = 'no-referrer'
-    image.src = input
+    image.src = `https://corsproxy.io/?${input}`
 
     image.onload = () => {
       const canvas = document.createElement('canvas')
@@ -237,7 +234,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
         }).then(async (response) => {
           const res = await response.json() as ImgurUploadResponse
           setLink(res.data.link)
-          onCopyToClipBoard()
+          onCopyToClipBoard(res.data.link)
           toast.success('Image was upload and command copied to your clipboard.')
         }).catch((error) => {
           console.error(error)
@@ -272,7 +269,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
             disabled={isUploading}
           />
           <CustomIconButton
-            onClick={onCopyToClipBoard}
+            onClick={() => onCopyToClipBoard()}
             variant="contained"
             Icon={ContentCopy}
             label="Copy last generated command"

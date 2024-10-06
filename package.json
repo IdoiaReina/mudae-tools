@@ -10,7 +10,7 @@
     "react-build": "react-scripts build",
     "electron-build": "electron-builder",
     "build": "cross-env NODE_ENV=production yarn react-build && yarn electron-build",
-    "deploy": "gh-pages -d build",
+    "deploy": "yarn react-build && yarn gh-pages -d build",
     "package": "electron-builder --dir",
     "make": "electron-builder --win --mac --linux",
     "postinstall": "electron-builder install-app-deps",

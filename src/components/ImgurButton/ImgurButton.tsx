@@ -112,7 +112,7 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
             console.error(res)
             refreshToken()
           } else if (res) {
-            console.log(res)
+            //
           }
         })
         .catch((error) => {
