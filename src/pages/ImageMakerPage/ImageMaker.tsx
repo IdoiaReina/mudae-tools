@@ -237,7 +237,6 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
       </ReactCrop>
     </ImageProcessorContainer>
   )
-
 }
 
 export default ImageMaker
