@@ -105,6 +105,44 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
   }, [ input ])
 
+  const resizeImage = () => {
+    if (imgRef.current) {
+      const { width: imgWidth, height: imgHeight } = imgRef.current
+      const aspectRatio = 225 / 350
+      let cropWidth = imgWidth
+      let cropHeight = imgHeight
+
+      if (cropWidth / cropHeight > aspectRatio) {
+        cropWidth = cropHeight * aspectRatio
+      } else {
+        cropHeight = cropWidth / aspectRatio
+      }
+
+      setCrop({
+        unit: 'px',
+        x: (imgWidth - cropWidth) / 2,
+        y: (imgHeight - cropHeight) / 2,
+        width: cropWidth,
+        height: cropHeight,
+      })
+    }
+  }
+
+  useEffect(() => {
+    resizeImage()
+    const observer = new ResizeObserver(resizeImage)
+    if (imgRef.current) {
+      observer.observe(imgRef.current)
+    }
+
+    return () => {
+      if (imgRef.current) {
+        observer.unobserve(imgRef.current)
+      }
+      observer.disconnect()
+    }
+  }, [ ])
+
   const onClickLoad = () => {
     setOpenInput(false)
     setInput(newImage)
