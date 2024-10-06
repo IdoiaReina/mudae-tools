@@ -103,12 +103,11 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
 
   useEffect(() => {
     dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: input } : value)))
-  }, [])
+  }, [ input ])
 
   const onClickLoad = () => {
     setOpenInput(false)
     setInput(newImage)
-    dispatch(setSavedMakers(savedMakers.map((value) => value.id === id ? { ...value, imageUrl: newImage } : value)))
   }
 
   const onCloseModal = () => {
