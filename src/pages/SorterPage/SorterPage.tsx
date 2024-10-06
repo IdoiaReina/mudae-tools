@@ -29,7 +29,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Tooltip,
 } from '@mui/material'
 import {
   ContentCopy,
@@ -185,28 +184,18 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           Harem Sorter
         </Title>
         <TitleButtons>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Input harem"
-          >
-            <CustomIconButton
-              onClick={() => setOpenInput(true)}
-              variant="contained"
-              Icon={Edit}
-            />
-          </Tooltip>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Output Mudae's commands"
-          >
-            <CustomIconButton
-              onClick={() => {setOpenOutput(true); onOutputClick()}}
-              variant="contained"
-              Icon={Done}
-            />
-          </Tooltip>
+          <CustomIconButton
+            onClick={() => setOpenInput(true)}
+            variant="contained"
+            label="Input harem"
+            Icon={Edit}
+          />
+          <CustomIconButton
+            onClick={() => {setOpenOutput(true); onOutputClick()}}
+            variant="contained"
+            Icon={Done}
+            label="Output Mudae's commands"
+          />
         </TitleButtons>
       </LargeTitle>
       <Dialog

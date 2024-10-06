@@ -14,7 +14,6 @@ import {
 import { getRandomInt } from 'helpers/getRandomInt'
 
 /* Component imports -------------------------------------------------------- */
-import { Tooltip } from '@mui/material'
 import { PersonAddAlt1 } from '@mui/icons-material'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
@@ -72,17 +71,12 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
           Image Picker
         </Title>
         <TitleButtons>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Add another character"
-          >
-            <CustomIconButton
-              onClick={onAddNewWaifu}
-              variant="contained"
-              Icon={PersonAddAlt1}
-            />
-          </Tooltip>
+          <CustomIconButton
+            onClick={onAddNewWaifu}
+            variant="contained"
+            Icon={PersonAddAlt1}
+            label="Add another character"
+          />
         </TitleButtons>
       </LargeTitle>
       <Container>

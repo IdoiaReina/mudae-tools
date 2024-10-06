@@ -14,7 +14,6 @@ import {
 import { getRandomInt } from 'helpers/getRandomInt'
 
 /* Component imports -------------------------------------------------------- */
-import { Tooltip } from '@mui/material'
 import { PersonAddAlt1 } from '@mui/icons-material'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
@@ -73,17 +72,12 @@ const ImageMakerPage: React.FC<ImageMakerPageProps> = () => {
           Custom Image Maker
         </Title>
         <TitleButtons>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Add another character"
-          >
-            <CustomIconButton
-              onClick={onAddNewWaifu}
-              variant="contained"
-              Icon={PersonAddAlt1}
-            />
-          </Tooltip>
+          <CustomIconButton
+            onClick={onAddNewWaifu}
+            variant="contained"
+            Icon={PersonAddAlt1}
+            label="Add another character"
+          />
         </TitleButtons>
       </LargeTitle>
       <Container>

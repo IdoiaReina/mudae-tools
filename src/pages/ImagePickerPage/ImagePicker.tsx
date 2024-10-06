@@ -29,7 +29,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Tooltip,
 } from '@mui/material'
 import {
   Delete,
@@ -169,22 +168,18 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
       <BoldTitle>
         {name}
         <TitleButtons>
-          <Tooltip
-            arrow
-            placement="top"
-            title="Input image list"
-          >
-            <CustomIconButton
-              onClick={() => setOpenInput(true)}
-              variant="contained"
-              Icon={Edit}
-            />
-          </Tooltip>
+          <CustomIconButton
+            onClick={() => setOpenInput(true)}
+            variant="contained"
+            Icon={Edit}
+            label="Input image list"
+          />
           <CustomIconButton
             Icon={Delete}
             variant="outlined"
             color="error"
             onClick={onDeletePickerClick}
+            label="Delete picker"
           />
         </TitleButtons>
       </BoldTitle>
