@@ -37,7 +37,6 @@ import FormBoldTitle from 'components/FormBoldTitle/FormBoldTitle'
 /* Styled components -------------------------------------------------------- */
 const ImageProcessorContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 250px);
 
   .FIE_rotate-tool-button {
     display: none;
@@ -62,6 +61,16 @@ const ModalAction = styled(DialogActions)`
   gap: 10px;
   justify-content: center;
   align-items: center;
+`
+
+const Container = styled.div`
+  max-height: calc(100vh - 230px);
+  display: flex;
+  justify-content: center;
+
+  img {
+    max-height: calc(100vh - 230px);
+  }
 `
 
 /* Component declaration ---------------------------------------------------- */
@@ -224,17 +233,20 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
           </LongButton>
         </ModalAction>
       </Dialog>
-      <ReactCrop
-        crop={crop}
-        onChange={(c) => setCrop(c)}
-        aspect={225/350}
-      >
-        <img
-          ref={imgRef}
-          src={input}
-          referrerPolicy="no-referrer"
-        />
-      </ReactCrop>
+      <Container>
+        <ReactCrop
+          crop={crop}
+          onChange={(c) => setCrop(c)}
+          aspect={225/350}
+          // style={{ height: '100%', width: '100%', objectFit: 'contain' }}
+        >
+          <img
+            ref={imgRef}
+            src={input}
+            referrerPolicy="no-referrer"
+          />
+        </ReactCrop>
+      </Container>
     </ImageProcessorContainer>
   )
 }
