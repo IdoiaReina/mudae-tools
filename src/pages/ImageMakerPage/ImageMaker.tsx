@@ -82,7 +82,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const dispatch = useAppDispatch()
   const savedMakers = useAppSelector(selectSavedMakers)
   const imgRef = useRef<HTMLImageElement | null>(null)
-  const [ openInput, setOpenInput ] = useState<boolean>((savedMakers.some((val) => val.id === id)))
+  const [ openInput, setOpenInput ] = useState<boolean>(!savedMakers.some((val) => val.id === id))
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageUrl || '')
   const [ crop, setCrop ] = useState<Crop>({ unit: 'px', width: 225, height: 350, x: 0, y: 0 })
 
