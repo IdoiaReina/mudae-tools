@@ -57,11 +57,17 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
       {...listeners}
       {...attributes}
     >
-      <Image
-        src={waifu.url}
-        alt={waifu.id}
-        referrerPolicy="no-referrer"
-      />
+      {
+        waifu.url ?
+          <Image
+            src={waifu.url}
+            alt={waifu.id}
+            referrerPolicy="no-referrer"
+          /> :
+          <p>
+            {waifu.id}
+          </p>
+      }
     </Item>
   )
 }

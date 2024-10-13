@@ -121,6 +121,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     const w: Waifu[] = []
     lines.forEach((line) => {
       if (!line.includes(' - http')) return
+      const catRegex = /\[(.*?)\]/
+      if (line.match(catRegex)?.[1]) {
+        w.push({ id: line.match(catRegex)?.[1] || '', url: '' })
+      }
       const id = line.replaceAll(/\|[^-]+(?=-)/g, '').split(' - http')[0]
       const url = `http${line.split(' - http')[1]}`
       if (isValidString(id))
@@ -131,7 +135,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   }
 
   const onOutputClick = () => {
-    const ids = waifus.map((w) => w.id)
+    const ids = waifus.filter((w) => w.url).map((w) => w.id)
     const maxLength = 2000
     const result: string[] = []
     let currentText = '$smp '
