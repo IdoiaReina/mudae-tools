@@ -119,11 +119,12 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   const onParseClick = () => {
     const lines = input.split('\n')
     const w: WaifuImage[] = []
-    lines.reverse().forEach((line, index) => {
+    lines.reverse().forEach((line) => {
       if (!line.includes('. http')) return
       const url = `http${line.split('. http')[1]}`
+      const id = parseInt(line.split('. ')[0])
       if (isValidString(url))
-        w.push({ id: index + 1, url })
+        w.push({ id, url })
     })
     setImages(w)
     setOpenInput(false)
