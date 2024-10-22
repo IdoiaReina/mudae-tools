@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/mudae-tools/static/css/main.585178ee.css",
-    "main.js": "/mudae-tools/static/js/main.117193c5.js",
+    "main.js": "/mudae-tools/static/js/main.c6ffd577.js",
     "static/js/488.aa628c2c.chunk.js": "/mudae-tools/static/js/488.aa628c2c.chunk.js",
     "static/media/logo.png": "/mudae-tools/static/media/logo.2b9dfc4183dbafa9a6f2.png",
     "service-worker.js": "/mudae-tools/service-worker.js",
     "static/media/ImgurLogo.svg": "/mudae-tools/static/media/ImgurLogo.75af3f50d6d46f777d2ba0681e6bb8c6.svg",
     "index.html": "/mudae-tools/index.html",
     "main.585178ee.css.map": "/mudae-tools/static/css/main.585178ee.css.map",
-    "main.117193c5.js.map": "/mudae-tools/static/js/main.117193c5.js.map",
+    "main.c6ffd577.js.map": "/mudae-tools/static/js/main.c6ffd577.js.map",
     "488.aa628c2c.chunk.js.map": "/mudae-tools/static/js/488.aa628c2c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.585178ee.css",
-    "static/js/main.117193c5.js"
+    "static/js/main.c6ffd577.js"
   ]
 }
