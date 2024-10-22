@@ -115,7 +115,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
   const savedMakers = useAppSelector(selectSavedMakers)
   const tokens = useAppSelector(selectImgurToken)
   const imgRef = useRef<HTMLImageElement | null>(null)
-  const [ openInput, setOpenInput ] = useState<boolean>(savedMakers.find((val) => val.id === id)?.name === '')
+  const [ openInput, setOpenInput ] = useState<boolean>(savedMakers.find((val) => val.id === id)?.imageBase64 === '')
   const [ name, setName ] = useState<string>(savedMakers.find((val) => val.id === id)?.name || '')
   const [ input, setInput ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
   const [ newImage, setNewImage ] = useState<string>(savedMakers.find((val) => val.id === id)?.imageBase64 || '')
