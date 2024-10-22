@@ -6,6 +6,7 @@ import React, {
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
+import { useNavigate } from 'react-router-dom'
 import {
   arrayMove,
   SortableContext,
@@ -20,8 +21,13 @@ import {
   selectSavedPickers,
   setSavedPickers,
 } from 'store/slices/pickerSlice'
+import {
+  selectSavedMakers,
+  setSavedMakers,
+} from 'store/slices/makerSlice'
 import { isValidString } from 'helpers/isValidString'
 import { copyToClipBoard } from 'helpers/copyToClipBoard'
+import { getRandomInt } from 'helpers/getRandomInt'
 
 /* Component imports -------------------------------------------------------- */
 import {
@@ -32,6 +38,7 @@ import {
   TextField,
 } from '@mui/material'
 import {
+  AspectRatio,
   Delete,
   Edit,
 } from '@mui/icons-material'
@@ -108,8 +115,10 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   zoomLevel,
 }) => {
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
+  const savedMakers = useAppSelector(selectSavedMakers)
   const [ openInput, setOpenInput ] = useState<boolean>((savedPickers.find((val) => val.index === index)?.images?.length || 0) === 0)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
   const [ images, setImages ] = useState<WaifuImage[]>(savedPickers.find((val) => val.index === index)?.images || [])
@@ -161,11 +170,25 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
     }
   }
 
+  const goToMaker = async () => {
+    if (!savedMakers.some((picker) => picker.name === name)) {
+      dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name, imageBase64: '', link: '' } ] ))
+    }
+    await copyToClipBoard(name)
+    navigate('/custom-image-maker')
+  }
+
   return (
     <ContainerDiv>
       <BoldTitle>
         {name}
         <TitleButtons>
+          <CustomIconButton
+            Icon={AspectRatio}
+            variant="outlined"
+            onClick={goToMaker}
+            label="Go to Maker"
+          />
           <CustomIconButton
             onClick={() => setOpenInput(true)}
             variant="contained"

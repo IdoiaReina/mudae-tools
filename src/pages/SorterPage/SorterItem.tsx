@@ -138,12 +138,14 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
               variant="contained"
               onClick={goToPicker}
               customSize={IconButtonSize.small}
+              label="Go to Picker"
             />
             <CustomIconButton
               Icon={AspectRatio}
               variant="contained"
               onClick={goToMaker}
               customSize={IconButtonSize.small}
+              label="Go to Maker"
             />
           </Line>
       }
