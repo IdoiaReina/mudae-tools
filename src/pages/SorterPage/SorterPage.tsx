@@ -27,6 +27,7 @@ import {
   setSorterZoomLevel,
 } from 'store/slices/settingsSlice'
 import { isValidString } from 'helpers/isValidString'
+import { copyToClipBoard } from 'helpers/copyToClipBoard'
 
 /* Component imports -------------------------------------------------------- */
 import {
@@ -173,12 +174,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   }
 
   const onCopyToClipBoard = async (value: string) => {
-    if (typeof ClipboardItem !== 'undefined') {
-      const html = new Blob([ value ], { type: 'text/html' })
-      const text = new Blob([ value ], { type: 'text/plain' })
-      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
-      await navigator.clipboard.write([ data ])
-    }
+    await copyToClipBoard(value)
   }
 
   const handleDragEnd = (event: {active: {id: string}; over: {id: string}} ) => {

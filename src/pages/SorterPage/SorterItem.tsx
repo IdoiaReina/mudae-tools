@@ -3,19 +3,34 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 /* Module imports ----------------------------------------------------------- */
+import { useNavigate } from 'react-router-dom'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/hooks'
+import {
+  selectSavedPickers,
+  setSavedPickers,
+} from 'store/slices/pickerSlice'
+import { getRandomInt } from 'helpers/getRandomInt'
+import { copyToClipBoard } from 'helpers/copyToClipBoard'
 
 /* Component imports -------------------------------------------------------- */
 import {
   AspectRatio,
   Colorize,
 } from '@mui/icons-material'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
-import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import { IconButtonSize } from 'components/IconButtons/CustomIconButton/CustomIconButtonContainer'
+import {
+  selectSavedMakers,
+  setSavedMakers,
+} from 'store/slices/makerSlice'
 
 /* Styled components -------------------------------------------------------- */
 interface ItemProps {
@@ -57,6 +72,10 @@ interface SorterItemProps {
 }
 
 const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const savedPickers = useAppSelector(selectSavedPickers)
+  const savedMakers = useAppSelector(selectSavedMakers)
   const {
     attributes,
     listeners,
@@ -73,12 +92,36 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
     opacity: isDragging ? 0.3 : 1,
   }
 
-  const goToPicker = () => {
-
+  const goToPicker = async () => {
+    if (!savedPickers.some((picker) => picker.name === waifu.id)) {
+      dispatch(setSavedPickers([ ...savedPickers, { images: [], index: getRandomInt(1000000000), name: waifu.id } ] ))
+    }
+    await copyToClipBoard(`$imi-s ${waifu.id}`)
+    navigate('/image-picker')
   }
 
-  const goToMaker = () => {
+  const goToMaker = async () => {
+    if (!savedMakers.some((picker) => picker.name === waifu.id)) {
+      dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: waifu.id, imageBase64: '', link: '' } ] ))
+    }
+    await copyToClipBoard(waifu.id)
+    navigate('/custom-image-maker')
+  }
 
+  if (!waifu.url) {
+    return (
+      <Item
+        ref={setNodeRef}
+        style={style}
+        zoomLevel={zoomLevel}
+        {...listeners}
+        {...attributes}
+      >
+        <p>
+          {waifu.id}
+        </p>
+      </Item>
+    )
   }
 
   return (
@@ -86,39 +129,31 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
       ref={setNodeRef}
       style={style}
       zoomLevel={zoomLevel}
-      {...listeners}
-      {...attributes}
     >
       {
-        waifu.url ?
-          <>
-            {
-              displayName &&
-                <Line onClick={(e) => e.stopPropagation()}>
-                  <CustomIconButton
-                    Icon={Colorize}
-                    variant="contained"
-                    onClick={goToPicker}
-                    customSize={IconButtonSize.small}
-                  />
-                  <CustomIconButton
-                    Icon={AspectRatio}
-                    variant="contained"
-                    onClick={goToMaker}
-                    customSize={IconButtonSize.small}
-                  />
-                </Line>
-            }
-            <Image
-              src={waifu.url}
-              alt={waifu.id}
-              referrerPolicy="no-referrer"
+        displayName &&
+          <Line onClick={(e) => e.stopPropagation()}>
+            <CustomIconButton
+              Icon={Colorize}
+              variant="contained"
+              onClick={goToPicker}
+              customSize={IconButtonSize.small}
             />
-          </> :
-          <p>
-            {waifu.id}
-          </p>
+            <CustomIconButton
+              Icon={AspectRatio}
+              variant="contained"
+              onClick={goToMaker}
+              customSize={IconButtonSize.small}
+            />
+          </Line>
       }
+      <Image
+        src={waifu.url}
+        alt={waifu.id}
+        referrerPolicy="no-referrer"
+        {...listeners}
+        {...attributes}
+      />
     </Item>
   )
 }

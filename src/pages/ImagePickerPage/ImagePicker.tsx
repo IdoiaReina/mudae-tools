@@ -21,6 +21,7 @@ import {
   setSavedPickers,
 } from 'store/slices/pickerSlice'
 import { isValidString } from 'helpers/isValidString'
+import { copyToClipBoard } from 'helpers/copyToClipBoard'
 
 /* Component imports -------------------------------------------------------- */
 import {
@@ -45,11 +46,11 @@ import {
 import LongButton from 'components/LongButton/LongButton'
 import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
+import BoldTitle from 'components/BoldTitle/BoldTitle'
 import ImagePickerItem from './ImagePickerItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
-import BoldTitle from 'components/BoldTitle/BoldTitle'
 
 /* Styled components -------------------------------------------------------- */
 const ContainerDiv = styled.div`
@@ -134,13 +135,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
 
   const onCopyToClipBoard = async (image: WaifuImage) => {
     const value = `$c ${name}$${image.id}`
-
-    if (typeof ClipboardItem !== 'undefined') {
-      const html = new Blob([ value ], { type: 'text/html' })
-      const text = new Blob([ value ], { type: 'text/plain' })
-      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
-      await navigator.clipboard.write([ data ])
-    }
+    await copyToClipBoard(value)
   }
 
   const onDeleteImage = (id: number) => {
