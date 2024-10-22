@@ -196,6 +196,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
                   Icon={Brightness4Rounded}
                   variant="contained"
                   onClick={handleThemeModeClick}
+                  label="Switch light/dark mode"
                 />
               </SearchBar>
             </HeaderTitleContainer>
@@ -213,6 +214,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
                 Icon={Brightness4Rounded}
                 variant="contained"
                 onClick={handleThemeModeClick}
+                label="Switch light/dark mode"
               />
             </HeaderTitleContainer>
           </HeaderContainer>

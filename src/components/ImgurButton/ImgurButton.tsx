@@ -180,7 +180,7 @@ const ImgurButton: React.FC<ImgurButtonProps> = () => {
                     onClick={resetAuth}
                     variant="contained"
                     color="error"
-                    label="Logout of Imgur"
+                    label="Log out of Imgur"
                   />
                 </PaperContainer>
               </Fade>

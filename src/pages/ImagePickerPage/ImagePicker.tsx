@@ -45,7 +45,7 @@ import {
 import LongButton from 'components/LongButton/LongButton'
 import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
-import SorterItem from './ImageItem'
+import ImagePickerItem from './ImagePickerItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
@@ -249,7 +249,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
             >
               {
                 images.map((image) => (
-                  <SorterItem
+                  <ImagePickerItem
                     key={image.id}
                     image={image}
                     onCopy={() => onCopyToClipBoard(image)}

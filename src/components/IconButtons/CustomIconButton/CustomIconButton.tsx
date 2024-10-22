@@ -10,11 +10,13 @@ import CustomIconButtonContainer from './CustomIconButtonContainer'
 
 /* Type imports ------------------------------------------------------------- */
 import type { SvgIconComponent } from '@mui/icons-material'
+import type { IconButtonSize } from './CustomIconButtonContainer'
 
 /* Component declaration ---------------------------------------------------- */
 interface CustomIconButtonProps extends ButtonProps {
   Icon: SvgIconComponent;
   label?: string;
+  customSize?: IconButtonSize;
 }
 
 const CustomIconButton: React.FC<CustomIconButtonProps> = ({ Icon, label, ...rest }) => {

@@ -15,6 +15,7 @@ import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIcon
 
 /* Type imports ------------------------------------------------------------- */
 import type { WaifuImage } from 'types/Waifu'
+import { IconButtonSize } from 'components/IconButtons/CustomIconButton/CustomIconButtonContainer'
 
 /* Styled components -------------------------------------------------------- */
 interface ItemProps {
@@ -58,7 +59,7 @@ interface ImageItemProps {
   zoomLevel: number;
 }
 
-const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy, zoomLevel }) => {
+const ImagePickerItemProps: React.FC<ImageItemProps> = ({ image, onDelete, onCopy, zoomLevel }) => {
   const {
     attributes,
     listeners,
@@ -87,12 +88,16 @@ const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy, zoomL
           variant="outlined"
           color="error"
           onClick={onDelete}
+          customSize={IconButtonSize.small}
+          label="Remove image from picker"
         />
         {image.id}
         <CustomIconButton
           Icon={ContentCopy}
           variant="contained"
           onClick={onCopy}
+          customSize={IconButtonSize.small}
+          label="Copy command to select this image in discord"
         />
       </Line>
       <Card
@@ -109,4 +114,4 @@ const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy, zoomL
   )
 }
 
-export default SortableItem
+export default ImagePickerItemProps

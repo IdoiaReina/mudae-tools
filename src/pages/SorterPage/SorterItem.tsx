@@ -6,8 +6,16 @@ import styled from '@emotion/styled'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
+/* Component imports -------------------------------------------------------- */
+import {
+  AspectRatio,
+  Colorize,
+} from '@mui/icons-material'
+
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
+import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
+import { IconButtonSize } from 'components/IconButtons/CustomIconButton/CustomIconButtonContainer'
 
 /* Styled components -------------------------------------------------------- */
 interface ItemProps {
@@ -31,6 +39,16 @@ const Image = styled.img`
   border-radius: 4px;
 `
 
+const Line = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  font-weight: bold;
+  width: 100%;
+  overflow: hidden;
+`
+
 /* Component declaration ---------------------------------------------------- */
 interface SorterItemProps {
   waifu: Waifu;
@@ -38,7 +56,7 @@ interface SorterItemProps {
   zoomLevel: number;
 }
 
-const SortableItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }) => {
+const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }) => {
   const {
     attributes,
     listeners,
@@ -55,6 +73,14 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel
     opacity: isDragging ? 0.3 : 1,
   }
 
+  const goToPicker = () => {
+
+  }
+
+  const goToMaker = () => {
+
+  }
+
   return (
     <Item
       ref={setNodeRef}
@@ -65,19 +91,30 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel
     >
       {
         waifu.url ?
-          <div>
+          <>
+            {
+              displayName &&
+                <Line onClick={(e) => e.stopPropagation()}>
+                  <CustomIconButton
+                    Icon={Colorize}
+                    variant="contained"
+                    onClick={goToPicker}
+                    customSize={IconButtonSize.small}
+                  />
+                  <CustomIconButton
+                    Icon={AspectRatio}
+                    variant="contained"
+                    onClick={goToMaker}
+                    customSize={IconButtonSize.small}
+                  />
+                </Line>
+            }
             <Image
               src={waifu.url}
               alt={waifu.id}
               referrerPolicy="no-referrer"
             />
-            {
-              displayName &&
-                <div>
-                  {waifu.id}
-                </div>
-            }
-          </div> :
+          </> :
           <p>
             {waifu.id}
           </p>
@@ -86,4 +123,4 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel
   )
 }
 
-export default SortableItem
+export default SorterItem
