@@ -34,6 +34,8 @@ import {
   ContentCopy,
   Done,
   Edit,
+  ZoomIn,
+  ZoomOut,
 } from '@mui/icons-material'
 import {
   DndContext,
@@ -50,6 +52,10 @@ import SorterItem from './SorterItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
+import {
+  selectSorterZoomLevel,
+  setSorterZoomLevel,
+} from 'store/slices/settingsSlice'
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`
@@ -105,6 +111,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   const defaultText = 'Frieren - https://mudae.net/uploads/9949210/hg_e2HM~3RehmOY.png\nAi Hoshino - https://mudae.net/uploads/5711403/00gHdVh~x89DiGH.png'
   const dispatch = useAppDispatch()
   const savedWaifus = useAppSelector(selectSavedWaifus)
+  const zoomLevel = useAppSelector(selectSorterZoomLevel)
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
   const [ openInput, setOpenInput ] = useState<boolean>(savedWaifus.length === 0)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
@@ -181,6 +188,14 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     }
   }
 
+  const zoomOut = () => {
+    dispatch(setSorterZoomLevel(zoomLevel - 0.1))
+  }
+
+  const zoomIn = () => {
+    dispatch(setSorterZoomLevel(zoomLevel + 0.1))
+  }
+
   return (
     <div>
       <LargeTitle>
@@ -188,6 +203,18 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           Harem Sorter
         </Title>
         <TitleButtons>
+          <CustomIconButton
+            onClick={zoomOut}
+            variant="outlined"
+            label="Zoom Out"
+            Icon={ZoomOut}
+          />
+          <CustomIconButton
+            onClick={zoomIn}
+            variant="outlined"
+            label="Zoom In"
+            Icon={ZoomIn}
+          />
           <CustomIconButton
             onClick={() => setOpenInput(true)}
             variant="contained"
@@ -291,6 +318,8 @@ const SorterPage: React.FC<SorterPageProps> = () => {
                   <SorterItem
                     key={w.id}
                     waifu={w}
+                    zoomLevel={zoomLevel}
+                    displayName
                   />
                 ))
               }

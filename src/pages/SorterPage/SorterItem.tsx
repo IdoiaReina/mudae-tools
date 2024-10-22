@@ -10,9 +10,12 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Waifu } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
-const Item = styled.div`
-  width: 130px;
-  height: 202px;
+interface ItemProps {
+  zoomLevel: number;
+}
+
+const Item = styled.div<ItemProps>`
+  width: ${(props) => props.zoomLevel * 130}px;
   margin: 5px;
   display: flex;
   flex-direction: column;
@@ -31,9 +34,11 @@ const Image = styled.img`
 /* Component declaration ---------------------------------------------------- */
 interface SorterItemProps {
   waifu: Waifu;
+  displayName: boolean;
+  zoomLevel: number;
 }
 
-const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
+const SortableItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }) => {
   const {
     attributes,
     listeners,
@@ -54,16 +59,25 @@ const SortableItem: React.FC<SorterItemProps> = ({ waifu }) => {
     <Item
       ref={setNodeRef}
       style={style}
+      zoomLevel={zoomLevel}
       {...listeners}
       {...attributes}
     >
       {
         waifu.url ?
-          <Image
-            src={waifu.url}
-            alt={waifu.id}
-            referrerPolicy="no-referrer"
-          /> :
+          <div>
+            <Image
+              src={waifu.url}
+              alt={waifu.id}
+              referrerPolicy="no-referrer"
+            />
+            {
+              displayName &&
+                <div>
+                  {waifu.id}
+                </div>
+            }
+          </div> :
           <p>
             {waifu.id}
           </p>
