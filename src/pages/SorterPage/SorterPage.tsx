@@ -21,7 +21,9 @@ import {
   setSavedWaifus,
 } from 'store/slices/sorterSlice'
 import {
+  selectSorterDisplayName,
   selectSorterZoomLevel,
+  setSorterDisplayName,
   setSorterZoomLevel,
 } from 'store/slices/settingsSlice'
 import { isValidString } from 'helpers/isValidString'
@@ -38,6 +40,8 @@ import {
   ContentCopy,
   Done,
   Edit,
+  Visibility,
+  VisibilityOff,
   ZoomIn,
   ZoomOut,
 } from '@mui/icons-material'
@@ -112,6 +116,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
   const dispatch = useAppDispatch()
   const savedWaifus = useAppSelector(selectSavedWaifus)
   const zoomLevel = useAppSelector(selectSorterZoomLevel)
+  const displayName = useAppSelector(selectSorterDisplayName)
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
   const [ openInput, setOpenInput ] = useState<boolean>(savedWaifus.length === 0)
   const [ input, setInput ] = useState<string>(process.env.NODE_ENV === 'production' ? '' : defaultText)
@@ -196,6 +201,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     dispatch(setSorterZoomLevel(zoomLevel + 0.1))
   }
 
+  const toggleDisplayName = () => {
+    dispatch(setSorterDisplayName(!displayName))
+  }
+
   return (
     <div>
       <LargeTitle>
@@ -203,6 +212,12 @@ const SorterPage: React.FC<SorterPageProps> = () => {
           Harem Sorter
         </Title>
         <TitleButtons>
+          <CustomIconButton
+            onClick={toggleDisplayName}
+            variant="outlined"
+            label="Display or hide characters names"
+            Icon={displayName ? VisibilityOff : Visibility}
+          />
           <CustomIconButton
             onClick={zoomOut}
             variant="outlined"
@@ -319,7 +334,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
                     key={w.id}
                     waifu={w}
                     zoomLevel={zoomLevel}
-                    displayName
+                    displayName={displayName}
                   />
                 ))
               }
