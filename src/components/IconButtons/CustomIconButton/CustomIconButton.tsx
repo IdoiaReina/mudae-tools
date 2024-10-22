@@ -16,7 +16,7 @@ import type { IconButtonSize } from './CustomIconButtonContainer'
 interface CustomIconButtonProps extends ButtonProps {
   Icon: SvgIconComponent;
   label?: string;
-  customSize?: IconButtonSize;
+  customsize?: IconButtonSize;
 }
 
 const CustomIconButton: React.FC<CustomIconButtonProps> = ({ Icon, label, ...rest }) => {

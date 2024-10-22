@@ -31,6 +31,7 @@ import {
   selectSavedMakers,
   setSavedMakers,
 } from 'store/slices/makerSlice'
+import { Tooltip } from '@mui/material'
 
 /* Styled components -------------------------------------------------------- */
 interface ItemProps {
@@ -58,7 +59,7 @@ const Line = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   font-weight: bold;
   width: 100%;
   overflow: hidden;
@@ -71,7 +72,11 @@ interface SorterItemProps {
   zoomLevel: number;
 }
 
-const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }) => {
+const SorterItem: React.FC<SorterItemProps> = ({
+  waifu,
+  displayName,
+  zoomLevel,
+}) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
@@ -129,33 +134,39 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
       ref={setNodeRef}
       style={style}
       zoomLevel={zoomLevel}
-      {...listeners}
-      {...attributes}
     >
       {
         displayName &&
-          <Line>
+          <Line onClick={(e) => e.stopPropagation()}>
             <CustomIconButton
               Icon={Colorize}
               variant="contained"
               onClick={goToPicker}
-              customSize={IconButtonSize.small}
+              customsize={IconButtonSize.small}
               label="Go to Picker"
             />
             <CustomIconButton
               Icon={AspectRatio}
               variant="contained"
               onClick={goToMaker}
-              customSize={IconButtonSize.small}
+              customsize={IconButtonSize.small}
               label="Go to Maker"
             />
           </Line>
       }
-      <Image
-        src={waifu.url}
-        alt={waifu.id}
-        referrerPolicy="no-referrer"
-      />
+      <Tooltip
+        arrow
+        placement="top"
+        title={waifu.id}
+      >
+        <Image
+          src={waifu.url}
+          alt={waifu.id}
+          referrerPolicy="no-referrer"
+          {...listeners}
+          {...attributes}
+        />
+      </Tooltip>
     </Item>
   )
 }

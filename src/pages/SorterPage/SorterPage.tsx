@@ -177,10 +177,10 @@ const SorterPage: React.FC<SorterPageProps> = () => {
     await copyToClipBoard(value)
   }
 
-  const handleDragEnd = (event: {active: {id: string}; over: {id: string}} ) => {
+  const handleDragEnd = (event: {active: {id: string}; over: {id: string}}) => {
     const { active, over } = event
 
-    if (active.id !== over.id) {
+    if (active?.id !== over?.id) {
       setWaifus((items) => {
         const oldIndex = items.findIndex((i) => i.id === active.id)
         const newIndex = items.findIndex((i) => i.id === over.id)

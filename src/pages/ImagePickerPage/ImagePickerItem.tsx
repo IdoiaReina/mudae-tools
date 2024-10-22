@@ -46,7 +46,7 @@ const Line = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   width: inherit;
   font-weight: bold;
 `
@@ -88,7 +88,7 @@ const ImagePickerItemProps: React.FC<ImageItemProps> = ({ image, onDelete, onCop
           variant="outlined"
           color="error"
           onClick={onDelete}
-          customSize={IconButtonSize.small}
+          customsize={IconButtonSize.small}
           label="Remove image from picker"
         />
         {image.id}
@@ -96,7 +96,7 @@ const ImagePickerItemProps: React.FC<ImageItemProps> = ({ image, onDelete, onCop
           Icon={ContentCopy}
           variant="contained"
           onClick={onCopy}
-          customSize={IconButtonSize.small}
+          customsize={IconButtonSize.small}
           label="Copy command to select this image in discord"
         />
       </Line>

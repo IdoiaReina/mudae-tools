@@ -12,14 +12,14 @@ export enum IconButtonSize {
 }
 
 interface CustomIconButtonContainer {
-  customSize?: IconButtonSize;
+  customsize?: IconButtonSize;
 }
 
 const CustomIconButtonContainer = styled(Button)<CustomIconButtonContainer>`
-  min-width: ${(props) => props.customSize || IconButtonSize.medium}px;
-  width: ${(props) => props.customSize || IconButtonSize.medium}px !important;
-  min-height: ${(props) => props.customSize || IconButtonSize.medium}px;
-  height: ${(props) => props.customSize || IconButtonSize.medium}px;
+  min-width: ${(props) => props.customsize || IconButtonSize.medium}px;
+  width: ${(props) => props.customsize || IconButtonSize.medium}px !important;
+  min-height: ${(props) => props.customsize || IconButtonSize.medium}px;
+  height: ${(props) => props.customsize || IconButtonSize.medium}px;
   margin: 0 2px;
   padding: 0px;
 
