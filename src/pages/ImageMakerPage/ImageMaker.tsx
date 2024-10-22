@@ -15,6 +15,7 @@ import {
   selectSavedMakers,
   setSavedMakers,
 } from 'store/slices/makerSlice'
+import { selectImgurToken } from 'store/slices/imgurSlice'
 
 /* Component imports -------------------------------------------------------- */
 import {
@@ -35,12 +36,13 @@ import {
   ReactCrop,
   type Crop,
 } from 'react-image-crop'
+import { toast } from 'react-toastify'
 import LongButton from 'components/LongButton/LongButton'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import FormBoldTitle from 'components/BoldTitle/FormBoldTitle'
 import BoldTitle from 'components/BoldTitle/BoldTitle'
-import { selectImgurToken } from 'store/slices/imgurSlice'
-import { toast } from 'react-toastify'
+
+/* Type imports ------------------------------------------------------------- */
 import type { ImgurUploadResponse } from 'types/Imgur'
 
 /* Styled components -------------------------------------------------------- */
