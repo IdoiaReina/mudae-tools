@@ -56,7 +56,7 @@ const ImageProcessorContainer = styled.div`
 
 const TitleButtons = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: center;
   align-items: center;
 `
