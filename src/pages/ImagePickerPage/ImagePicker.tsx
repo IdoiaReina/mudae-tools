@@ -96,6 +96,7 @@ interface ImagePickerProps {
   index: number;
   name: string;
   onChangeName: (value: string) => void;
+  zoomLevel: number;
 }
 
 const ImagePicker: React.FC<ImagePickerProps> = ({
@@ -103,6 +104,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   index,
   name,
   onChangeName,
+  zoomLevel,
 }) => {
   const defaultText = '5. https://mudae.net/uploads/5711403/GQDcKbx~8dFbzJa.png\n4. https://mudae.net/uploads/5711403/fHsuYUE~8TzHYol.png\n3. https://mudae.net/uploads/5711403/85N8SSu~xOIACK2.png\n2. https://mudae.net/uploads/5711403/dbJKvS-~yDZcBc0.png\n1. https://mudae.net/uploads/5711403/mwfbqTN~w5sjhP3.png'
   const dispatch = useAppDispatch()
@@ -252,6 +254,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                     image={image}
                     onCopy={() => onCopyToClipBoard(image)}
                     onDelete={() => onDeleteImage(image.id)}
+                    zoomLevel={zoomLevel}
                   />
                 ))
               }

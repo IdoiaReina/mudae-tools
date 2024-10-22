@@ -20,6 +20,10 @@ import {
   selectSavedWaifus,
   setSavedWaifus,
 } from 'store/slices/sorterSlice'
+import {
+  selectSorterZoomLevel,
+  setSorterZoomLevel,
+} from 'store/slices/settingsSlice'
 import { isValidString } from 'helpers/isValidString'
 
 /* Component imports -------------------------------------------------------- */
@@ -52,10 +56,6 @@ import SorterItem from './SorterItem'
 
 /* Type imports ------------------------------------------------------------- */
 import type { Waifu } from 'types/Waifu'
-import {
-  selectSorterZoomLevel,
-  setSorterZoomLevel,
-} from 'store/slices/settingsSlice'
 
 /* Styled components -------------------------------------------------------- */
 const Title = styled.div`

@@ -17,9 +17,12 @@ import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIcon
 import type { WaifuImage } from 'types/Waifu'
 
 /* Styled components -------------------------------------------------------- */
-const Item = styled.div`
-  width: 130px;
-  height: 248px;
+interface ItemProps {
+  zoomLevel: number;
+}
+
+const Item = styled.div<ItemProps>`
+  width: ${(props) => props.zoomLevel * 130}px;
   margin: 5px;
 `
 
@@ -30,7 +33,6 @@ const Card = styled.div`
   align-items: center;
   font-size: 13px;
   border-radius: 4px;
-  width: 130px;
 `
 
 const Image = styled.img`
@@ -53,9 +55,10 @@ interface ImageItemProps {
   image: WaifuImage;
   onDelete: () => void;
   onCopy: () => void;
+  zoomLevel: number;
 }
 
-const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy }) => {
+const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy, zoomLevel }) => {
   const {
     attributes,
     listeners,
@@ -76,6 +79,7 @@ const SortableItem: React.FC<ImageItemProps> = ({ image, onDelete, onCopy }) => 
     <Item
       ref={setNodeRef}
       style={style}
+      zoomLevel={zoomLevel}
     >
       <Line onClick={(e) => e.stopPropagation()}>
         <CustomIconButton

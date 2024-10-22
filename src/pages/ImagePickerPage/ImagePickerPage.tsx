@@ -11,10 +11,18 @@ import {
   selectSavedPickers,
   setSavedPickers,
 } from 'store/slices/pickerSlice'
+import {
+  selectPickerZoomLevel,
+  setPickerZoomLevel,
+} from 'store/slices/settingsSlice'
 import { getRandomInt } from 'helpers/getRandomInt'
 
 /* Component imports -------------------------------------------------------- */
-import { PersonAddAlt1 } from '@mui/icons-material'
+import {
+  PersonAddAlt1,
+  ZoomIn,
+  ZoomOut,
+} from '@mui/icons-material'
 import LargeTitle from 'components/LargeTitle/LargeTitle'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
 import ImagePicker from './ImagePicker'
@@ -45,6 +53,7 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
   const defaultName = process.env.NODE_ENV === 'production' ? '' : 'Ai Hoshino'
   const dispatch = useAppDispatch()
   const savedPickers = useAppSelector(selectSavedPickers)
+  const zoomLevel = useAppSelector(selectPickerZoomLevel)
 
   useEffect(() => {
     if (!savedPickers.length) {
@@ -64,6 +73,14 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
     dispatch(setSavedPickers(savedPickers.map((saved) => saved.index === index ? { ...saved, name: value } : saved) ))
   }
 
+  const zoomOut = () => {
+    dispatch(setPickerZoomLevel(zoomLevel - 0.1))
+  }
+
+  const zoomIn = () => {
+    dispatch(setPickerZoomLevel(zoomLevel + 0.1))
+  }
+
   return (
     <div>
       <LargeTitle>
@@ -71,6 +88,18 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
           Image Picker
         </Title>
         <TitleButtons>
+          <CustomIconButton
+            onClick={zoomOut}
+            variant="outlined"
+            label="Zoom Out"
+            Icon={ZoomOut}
+          />
+          <CustomIconButton
+            onClick={zoomIn}
+            variant="outlined"
+            label="Zoom In"
+            Icon={ZoomIn}
+          />
           <CustomIconButton
             onClick={onAddNewWaifu}
             variant="contained"
@@ -88,6 +117,7 @@ const ImagePickerPage: React.FC<ImagePickerPageProps> = () => {
               onDeletePickerClick={() => onDeleteContainer(picker.index)}
               name={picker.name}
               onChangeName={(value) => onChangeName(value, picker.index)}
+              zoomLevel={zoomLevel}
             />
           ))
         }
