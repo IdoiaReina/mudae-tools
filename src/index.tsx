@@ -43,23 +43,16 @@ root.render(
               localeText={frFR.components.MuiLocalizationProvider.defaultProps.localeText}
             >
               <CssBaseline />
-              <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-              />
               <App />
             </LocalizationProvider>
           </Theme>
         </HashRouter>
       </PersistGate>
+      <ToastContainer
+        position="bottom-center"
+        draggable
+        theme="colored"
+      />
     </Redux.Provider>
   </React.StrictMode>,
 )
