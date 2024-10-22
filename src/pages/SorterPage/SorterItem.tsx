@@ -129,10 +129,12 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
       ref={setNodeRef}
       style={style}
       zoomLevel={zoomLevel}
+      {...listeners}
+      {...attributes}
     >
       {
         displayName &&
-          <Line onClick={(e) => e.stopPropagation()}>
+          <Line>
             <CustomIconButton
               Icon={Colorize}
               variant="contained"
@@ -153,8 +155,6 @@ const SorterItem: React.FC<SorterItemProps> = ({ waifu, displayName, zoomLevel }
         src={waifu.url}
         alt={waifu.id}
         referrerPolicy="no-referrer"
-        {...listeners}
-        {...attributes}
       />
     </Item>
   )
