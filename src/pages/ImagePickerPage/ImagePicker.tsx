@@ -154,6 +154,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   const handleDragEnd = (event: {active: {id: number}; over: {id: number}} ) => {
     const { active, over } = event
 
+    if (!active.id || !over.id) return
     if (active.id !== over.id) {
       setImages((items) => {
         const oldIndex = items.findIndex((i) => i.id === active.id)
