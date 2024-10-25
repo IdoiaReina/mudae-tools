@@ -138,7 +138,7 @@ const SorterPage: React.FC<SorterPageProps> = () => {
       if (line.match(catRegex)?.[1]) {
         w.push({ id: line.match(catRegex)?.[1] || '', url: '' })
       }
-      const id = line.replaceAll(/\|[^-]+(?=-)/g, '').split(' - http')[0]
+      const id = line.split(' - http')[0].replace(/\s*\|.*$/, '').trim()
       const url = `http${line.split(' - http')[1]}`
       if (isValidString(id))
         w.push({ id: id, url })
