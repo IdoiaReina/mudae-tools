@@ -38,7 +38,7 @@ import {
   TextField,
 } from '@mui/material'
 import {
-  AspectRatio,
+  PhotoSizeSelectLarge,
   Delete,
   Edit,
 } from '@mui/icons-material'
@@ -185,7 +185,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
         {name}
         <TitleButtons>
           <CustomIconButton
-            Icon={AspectRatio}
+            Icon={PhotoSizeSelectLarge}
             variant="outlined"
             onClick={goToMaker}
             label="Go to Maker"

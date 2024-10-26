@@ -16,6 +16,7 @@ import {
   setSavedMakers,
 } from 'store/slices/makerSlice'
 import { selectImgurToken } from 'store/slices/imgurSlice'
+import { copyToClipBoard } from 'helpers/copyToClipBoard'
 
 /* Component imports -------------------------------------------------------- */
 import {
@@ -233,12 +234,7 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
 
   const onCopyToClipBoard = async (text?: string) => {
     const value = `$ai ${name}$${text || link}`
-
-    if (typeof ClipboardItem !== 'undefined') {
-      const html = new Blob([ value ], { type: 'text/html' })
-      const text = new Blob([ value ], { type: 'text/plain' })
-      const data = new ClipboardItem({ 'text/html': html, 'text/plain': text })
-      await navigator.clipboard.write([ data ])
+    if (await copyToClipBoard(value)) {
       toast.success('Copied to clipboard.')
     }
   }

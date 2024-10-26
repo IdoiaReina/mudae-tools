@@ -19,7 +19,7 @@ import { copyToClipBoard } from 'helpers/copyToClipBoard'
 
 /* Component imports -------------------------------------------------------- */
 import {
-  AspectRatio,
+  PhotoSizeSelectLarge,
   Colorize,
 } from '@mui/icons-material'
 import CustomIconButton from 'components/IconButtons/CustomIconButton/CustomIconButton'
@@ -146,7 +146,7 @@ const SorterItem: React.FC<SorterItemProps> = ({
               label="Go to Picker"
             />
             <CustomIconButton
-              Icon={AspectRatio}
+              Icon={PhotoSizeSelectLarge}
               variant="contained"
               onClick={goToMaker}
               customsize={IconButtonSize.small}
