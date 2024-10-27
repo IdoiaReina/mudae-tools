@@ -63,18 +63,17 @@ const Line = styled.div`
   font-weight: bold;
   width: 100%;
   overflow: hidden;
+  gap: 5px;
 `
 
 /* Component declaration ---------------------------------------------------- */
 interface SorterItemProps {
   waifu: Waifu;
-  displayName: boolean;
   zoomLevel: number;
 }
 
 const SorterItem: React.FC<SorterItemProps> = ({
   waifu,
-  displayName,
   zoomLevel,
 }) => {
   const navigate = useNavigate()
@@ -135,9 +134,12 @@ const SorterItem: React.FC<SorterItemProps> = ({
       style={style}
       zoomLevel={zoomLevel}
     >
-      {
-        displayName &&
+      <Tooltip
+        arrow
+        placement="top"
+        title={
           <Line onClick={(e) => e.stopPropagation()}>
+            {waifu.id}
             <CustomIconButton
               Icon={Colorize}
               variant="contained"
@@ -153,11 +155,7 @@ const SorterItem: React.FC<SorterItemProps> = ({
               label="Go to Maker"
             />
           </Line>
-      }
-      <Tooltip
-        arrow
-        placement="top"
-        title={waifu.id}
+        }
       >
         <Image
           src={waifu.url}
