@@ -57,9 +57,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [x] Verify package.json
 - [x] Upload on github pages
 - [x] Image maker
+- [x] Verify image before load in maker
 - [ ] Scroll diff on picker
 - [ ] Able to change colors + save in localstorage
-- [ ] Take a screenshot of harem
-- [x] Verify image before load in maker
 - [ ] Log out of Imgur
 - [ ] Convert images to png
