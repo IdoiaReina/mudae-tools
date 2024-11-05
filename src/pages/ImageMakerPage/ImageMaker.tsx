@@ -193,43 +193,56 @@ const ImageMaker: React.FC<ImageMakerProps> = ({
     }
   }
 
-  const handlePaste = async (event: React.ClipboardEvent) => {
+  const handlePaste = (event: React.ClipboardEvent) => {
     if (!event.clipboardData) return
-    const items = event.clipboardData.items
 
-    for (const item of items) {
-      if (item.kind === 'file' && item.type.startsWith('image/')) {
-        const file = item.getAsFile()
-        if (file) {
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            if (reader.result) {
-              setNewImage(reader.result as string)
-            }
-          }
-          reader.readAsDataURL(file)
-        }
-        return
-      }
-    }
-
-    const url = event.clipboardData.getData('text/plain')
-    if (url) {
-      try {
-        const response = await fetch(`https://corsproxy.io/?${url}`)
-        const blob = await response.blob()
+    if (event.clipboardData.files[0]) {
+      const file = event.clipboardData.files[0]
+      if (file) {
         const reader = new FileReader()
         reader.onloadend = () => {
           if (reader.result) {
             setNewImage(reader.result as string)
           }
         }
-        reader.readAsDataURL(blob)
-      } catch(error) {
-        toast.error('Could not read image from url.')
-        console.error('Could not read image from url.', error)
+        reader.readAsDataURL(file)
+        return
       }
     }
+
+    // for (const item of items) {
+    //   if (item.kind === 'file' && item.type.startsWith('image/')) {
+    //     const file = item.getAsFile()
+    //     if (file) {
+    //       const reader = new FileReader()
+    //       reader.onloadend = () => {
+    //         if (reader.result) {
+    //           setNewImage(reader.result as string)
+    //         }
+    //       }
+    //       reader.readAsDataURL(file)
+    //     }
+    //     return
+    //   }
+    // }
+
+    // const url = event.clipboardData.getData('text/plain')
+    // if (url) {
+    //   try {
+    //     const response = await fetch(`https://corsproxy.io/?${url}`)
+    //     const blob = await response.blob()
+    //     const reader = new FileReader()
+    //     reader.onloadend = () => {
+    //       if (reader.result) {
+    //         setNewImage(reader.result as string)
+    //       }
+    //     }
+    //     reader.readAsDataURL(blob)
+    //   } catch(error) {
+    //     toast.error('Could not read image from url.')
+    //     console.error('Could not read image from url.', error)
+    //   }
+    // }
   }
 
   const onCopyToClipBoard = async (text?: string) => {
