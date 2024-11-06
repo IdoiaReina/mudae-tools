@@ -171,11 +171,10 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
     }
   }
 
-  const goToMaker = async () => {
+  const goToMaker = () => {
     if (!savedMakers.some((picker) => picker.name === name)) {
       dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name, imageBase64: '', link: '' } ] ))
     }
-    await copyToClipBoard(name)
     navigate('/custom-image-maker')
   }
 

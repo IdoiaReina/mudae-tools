@@ -104,11 +104,10 @@ const SorterItem: React.FC<SorterItemProps> = ({
     navigate('/image-picker')
   }
 
-  const goToMaker = async () => {
+  const goToMaker = () => {
     if (!savedMakers.some((picker) => picker.name === waifu.id)) {
       dispatch(setSavedMakers([ ...savedMakers, { id: getRandomInt(1000000000), name: waifu.id, imageBase64: '', link: '' } ] ))
     }
-    await copyToClipBoard(waifu.id)
     navigate('/custom-image-maker')
   }
 
